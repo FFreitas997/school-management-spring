@@ -1,0 +1,78 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class BaseEntity {
+    -id: Integer
+    -createdAt: LocalDateTime
+    -createdBy: User
+    -lastModified: LocalDateTime
+    -lastModifiedBy: User
+}
+
+class User {
+    -firstname: String
+    -lastname: String
+    -email: String
+    -password: String
+    -roles: List<Role>
+}
+
+class Token{
+    -id: Integer
+    -token: String
+    -tokenType: TokenType
+    -expired: boolean
+    -revoked: boolean
+    -user: User
+}
+
+interface UserDetails{
+    +getUsername(): String
+    +getPassword(): String
+    +getAuthorities(): Collection<? extends GrantedAuthority>
+    +isAccountNonExpired(): boolean
+    +isAccountNonLocked(): boolean
+    +isCredentialsNonExpired(): boolean
+    +isEnabled(): boolean
+}
+
+enum Role {
+    ADMIN
+    TEACHER
+    STUDENT
+    PARENT
+    READ
+    WRITE
+}
+
+enum TokenType {
+    BEARER
+}
+
+User <|-- BaseEntity
+User <|-- UserDetails
+User *-- Role
+User *-- Token
+Token *-- TokenType
+
+
+/'abstract class AbstractList
+abstract AbstractCollection
+interface List
+interface Collection
+
+List <|-- AbstractList
+Collection <|-- AbstractCollection
+
+Collection <|- List
+AbstractCollection <|- AbstractList
+AbstractList <|-- ArrayList
+
+
+
+'/
+class ArrayList {
+Object[] elementData
+size()
+}
+@enduml
