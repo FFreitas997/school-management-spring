@@ -13,8 +13,12 @@ class User {
     -firstname: String
     -lastname: String
     -email: String
+    -picture: String
     -password: String
-    -roles: List<Role>
+    -role: Role
+    -enabled: boolean
+    -expiration: LocalDateTime
+    -locked: boolean
 }
 
 class Token{
@@ -24,6 +28,95 @@ class Token{
     -expired: boolean
     -revoked: boolean
     -user: User
+}
+
+class Student{
+    -gradeLevel: GradeLevel
+    -birthDate: LocalDateTime
+    -parent: Parent
+    -school: School
+    -medicalInformation: String
+    -specialNeeds: boolean
+    -teacherResponsable: Teacher
+
+
+}
+class Parent{
+    -occupation: String
+    -type: typeParent
+    -information: Information
+}
+
+class Teacher{
+    -school: School
+    -specialEducation: boolean
+    -subjects: String,
+    -yearsOfExperience: Integer
+    -educationQualification: String,
+    -department: String
+    -bioDescription: String
+    -recognition: String
+    -teachMethod: String
+
+}
+
+class Course{
+    -name: String
+    -description: String
+    -gradeLevel: GradeLevel
+    -subject: String
+    -room: String
+    -code: String
+    -credit: Integer
+    -prerequisites: String
+    -teacher: Teacher
+}
+
+class Assignment{
+    -title: String
+    -description: String
+    -dueDate: LocalDateTime
+    -point: Integer
+    -submissionType: String
+    -timeCompleted: LocalDateTime
+    -course: Course
+    -textbook: String
+}
+
+class Grade{
+    -student: Student
+    -course: Course
+    -grade: Integer
+    -date: LocalDateTime
+    -type: GradeType
+    -feedback: String
+}
+
+class Textbook{
+    -title: String
+    -description: String
+    -coverImage: String
+    -author: String
+    -edition: String
+    -isbn: String
+    -subject: String
+    -cost: Integer
+}
+
+class School{
+    -name: String
+    -type: SchoolType
+    -email: String
+    -information: Information
+}
+
+class Information{
+    -phone: String
+    -email: String
+    -street: String
+    -city: String
+    -state: String
+    -zip: String
 }
 
 interface UserDetails{
@@ -36,43 +129,99 @@ interface UserDetails{
     +isEnabled(): boolean
 }
 
+enum GradeType {
+    HOMEWORK
+    QUIZ
+    TEST
+    PROJECT
+    FINAL
+}
+
 enum Role {
     ADMIN
     TEACHER
     STUDENT
     PARENT
-    READ
-    WRITE
+}
+
+enum Permission {
+    ADMIN_READ
+    ADMIN_CREATE
+    ADMIN_DELETE
+    ADMIN_UPDATE
+
+    STUDENT_READ
+    STUDENT_CREATE
+    STUDENT_DELETE
+    STUDENT_UPDATE
+
+    TEACHER_READ
+    TEACHER_CREATE
+    TEACHER_DELETE
+    TEACHER_UPDATE
+
+    PARENT_READ
+    PARENT_CREATE
+    PARENT_DELETE
+    PARENT_UPDATE
 }
 
 enum TokenType {
     BEARER
 }
 
-User <|-- BaseEntity
-User <|-- UserDetails
-User *-- Role
-User *-- Token
-Token *-- TokenType
-
-
-/'abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-
-
-'/
-class ArrayList {
-Object[] elementData
-size()
+enum GradeLevel {
+    FIRST
+    SECOND
+    THIRD
+    FOURTH
+    FIFTH
+    SIXTH
+    SEVENTH
+    EIGHTH
+    NINTH
+    TENTH
+    ELEVENTH
+    TWELFTH
 }
+
+enum SchoolType {
+    PRIMARY
+    SECONDARY
+    HIGH
+}
+enum typeParent {
+    MOTHER
+    FATHER
+    GUARDIAN
+    OTHER
+}
+Course "1" <-- "N" Grade
+Student "N" <-- "N" Assignment
+Student "N" <-- "N" Course
+Course "N" <--> "N" Textbook
+Student "1" <-- "N" Grade
+Course "1" <-- "N" Assignment
+Teacher "1" <-- "N" Course
+Student "N"<--"1" School
+Parent <|-- Information: extends
+School <|-- Information: extends
+Student "N" <-- "1" Teacher
+Student "N" <-- "1" Parent
+User <|-- BaseEntity: extends
+User <|-- UserDetails: implements
+Student <|-- User : extends
+Parent <|-- User : extends
+Teacher <|-- User : extends
+User *-- Role
+Student *-- GradeLevel
+Grade *-- GradeType
+School *-- SchoolType
+Parent *-- typeParent
+User "1" *-- "N" Token
+Token "N" *-- "1" TokenType
+Role "1" *-- "N" Permission
+
+
+
 @enduml
