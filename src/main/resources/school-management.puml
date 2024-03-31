@@ -110,6 +110,18 @@ class School{
     -information: Information
 }
 
+class Event{
+    -title: String
+    -description: String
+    -datetime: LocalDateTime
+    -eventType: String
+    -location: String
+    -school: School
+    -courses: List<Course>
+    -students: List<Student>
+    -teachers: List<Teacher>
+}
+
 class Information{
     -phone: String
     -email: String
@@ -196,6 +208,10 @@ enum typeParent {
     GUARDIAN
     OTHER
 }
+Event "N" <-- "1" School
+Event "N" <-- "N" Student
+Event "N" <-- "N" Course
+Event "N" <-- "N" Teacher
 Course "1" <-- "N" Grade
 Student "N" <-- "N" Assignment
 Student "N" <-- "N" Course
