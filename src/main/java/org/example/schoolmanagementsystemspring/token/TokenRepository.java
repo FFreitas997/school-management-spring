@@ -1,6 +1,7 @@
 package org.example.schoolmanagementsystemspring.token;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -27,4 +28,8 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
             "inner join User user on token.user.id = user.id " +
             "where user.id = :userID and (token.expired = false or token.revoked = false)")
     List<Token> findAllValidTokensByUserId(Integer userID);
+
+    @Modifying
+    @Query("delete from Token token where token.expired = true and token.revoked = true")
+    void deleteExpiredTokens();
 }
