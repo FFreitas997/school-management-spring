@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +67,7 @@ public class AuthenticationController {
     )
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseRegisterDTO register(@RequestBody RequestRegisterDTO requestBody) throws Exception {
+    public ResponseRegisterDTO register(@Valid @RequestBody RequestRegisterDTO requestBody) throws Exception {
         log.info("Registering user: {}", requestBody.email());
         return service.register(requestBody);
     }
@@ -101,7 +102,7 @@ public class AuthenticationController {
     )
     @PostMapping("/authenticate")
     @ResponseStatus(HttpStatus.OK)
-    public AuthenticationResponseDto authenticate(@RequestBody AuthenticationRequestDto requestBody) {
+    public AuthenticationResponseDto authenticate(@Valid @RequestBody AuthenticationRequestDto requestBody) {
         log.info("Authenticating user: {}", requestBody.email());
         return service.authenticate(requestBody);
     }
