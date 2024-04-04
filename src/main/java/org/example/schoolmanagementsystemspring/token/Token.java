@@ -1,8 +1,11 @@
 package org.example.schoolmanagementsystemspring.token;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.schoolmanagementsystemspring.user.User;
+
+import java.time.LocalDateTime;
 
 /**
  * @author FFreitas
@@ -38,7 +41,14 @@ public class Token {
     @Column(name = "revoked", nullable = false)
     private boolean revoked = false;
 
+    @Column(name = "expired_at")
+    private LocalDateTime expiredAt;
+
+    @Column(name = "revoked_at")
+    private LocalDateTime revokedAt;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonManagedReference
     private User user;
 }
