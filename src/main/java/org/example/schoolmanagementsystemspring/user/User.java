@@ -1,5 +1,6 @@
 package org.example.schoolmanagementsystemspring.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -42,9 +43,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "picture")
-    private String picture;
-
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -58,7 +56,18 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "enabled")
     private boolean isEnabled;
 
-    @OneToMany(mappedBy = "user")
+    @Column(name = "image_name")
+    private String imageName;
+
+    @Column(name = "image_type")
+    private String imageType;
+
+    @Column(name = "image_data")
+    private byte[] imageData;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ToString.Exclude
     private List<Token> tokens;
 
     @Override
