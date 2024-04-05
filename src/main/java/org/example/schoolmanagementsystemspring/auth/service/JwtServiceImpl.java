@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.auth;
+package org.example.schoolmanagementsystemspring.auth.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

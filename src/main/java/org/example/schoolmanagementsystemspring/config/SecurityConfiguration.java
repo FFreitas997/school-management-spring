@@ -54,13 +54,6 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF because we are using JWT authentication
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(PERMIT_ALL_URLS).permitAll();
-
-                    /*auth.requestMatchers("/api/v1/student/**").hasAnyRole(ADMIN.name(), STUDENT.name(), TEACHER.name(), PARENT.name());
-                    auth.requestMatchers(HttpMethod.GET, "/api/v1/student/**").hasAnyAuthority(ADMIN_READ.name(), STUDENT_READ.name(), ADMIN_READ.name(), STUDENT_READ.name());
-                    auth.requestMatchers(HttpMethod.POST, "/api/v1/student/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name());
-                    auth.requestMatchers(HttpMethod.PUT, "/api/v1/student/**").hasAnyAuthority(ADMIN_UPDATE.name(), MANAGER_UPDATE.name());
-                    auth.requestMatchers(HttpMethod.DELETE, "/api/v1/student/**").hasAnyAuthority(ADMIN_DELETE.name(), MANAGER_DELETE.name());*/
-
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(param -> param.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

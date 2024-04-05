@@ -13,10 +13,7 @@ import java.time.LocalDateTime;
  * @Github: <a href="https://github.com/FFreitas997">FFreitas997</a>
  * @Project: School-Management-System-Spring
  */
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

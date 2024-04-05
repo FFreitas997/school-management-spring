@@ -20,10 +20,8 @@ import java.util.List;
  * @Project: School-Management-System-Spring
  */
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder

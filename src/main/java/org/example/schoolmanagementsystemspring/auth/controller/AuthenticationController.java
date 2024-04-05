@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.auth;
+package org.example.schoolmanagementsystemspring.auth.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,6 +9,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.schoolmanagementsystemspring.auth.service.AuthenticationService;
+import org.example.schoolmanagementsystemspring.auth.dto.AuthenticationRequestDto;
+import org.example.schoolmanagementsystemspring.auth.dto.AuthenticationResponseDto;
+import org.example.schoolmanagementsystemspring.auth.dto.RequestRegisterDTO;
+import org.example.schoolmanagementsystemspring.auth.dto.ResponseRegisterDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -24,7 +29,7 @@ import java.io.IOException;
  */
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @CrossOrigin
 @Tag(name = "Authentication and Register System", description = "Endpoints for authentication and registration in the system.")

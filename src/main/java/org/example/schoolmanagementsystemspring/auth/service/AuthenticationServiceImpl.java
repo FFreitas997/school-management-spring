@@ -1,9 +1,13 @@
-package org.example.schoolmanagementsystemspring.auth;
+package org.example.schoolmanagementsystemspring.auth.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.example.schoolmanagementsystemspring.auth.dto.AuthenticationRequestDto;
+import org.example.schoolmanagementsystemspring.auth.dto.AuthenticationResponseDto;
+import org.example.schoolmanagementsystemspring.auth.dto.RequestRegisterDTO;
+import org.example.schoolmanagementsystemspring.auth.dto.ResponseRegisterDTO;
 import org.example.schoolmanagementsystemspring.token.Token;
 import org.example.schoolmanagementsystemspring.token.TokenRepository;
 import org.example.schoolmanagementsystemspring.token.TokenType;
@@ -12,6 +16,8 @@ import org.example.schoolmanagementsystemspring.user.UserRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * @author FFreitas
@@ -86,6 +91,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private User mapToUser(RequestRegisterDTO dto) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return User
                 .builder()
                 .firstName(dto.firstName())
@@ -96,6 +102,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .expirationDate(LocalDateTime.now().plusYears(1))
                 .isEnabled(true)
                 .isLocked(false)
+                .createdAt(LocalDateTime.now())
+                .createdBy(authentication.getName())
                 .imageName(dto.picture().getOriginalFilename())
                 .imageType(dto.picture().getContentType())
                 .imageData(dto.picture().getBytes())
@@ -114,15 +122,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private void revokeAllUserTokens(User user) {
-        List<Token> tokens = tokenRepository.findAllValidTokensByUserId(user.getId());
-        if (tokens.isEmpty())
-            return;
-        tokens.forEach(token -> {
+        tokenRepository.findAllValidTokensByUserId(user.getId()).forEach(token -> {
             token.setRevoked(true);
             token.setExpired(true);
             token.setRevokedAt(LocalDateTime.now());
             token.setExpiredAt(LocalDateTime.now());
         });
-        tokenRepository.saveAll(tokens);
     }
 }

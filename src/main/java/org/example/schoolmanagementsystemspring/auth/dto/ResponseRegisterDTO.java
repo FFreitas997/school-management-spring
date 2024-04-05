@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.auth;
+package org.example.schoolmanagementsystemspring.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

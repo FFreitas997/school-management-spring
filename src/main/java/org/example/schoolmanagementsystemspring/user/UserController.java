@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,11 +23,12 @@ import java.util.List;
  * @Project: School-Management-System-Spring
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 @CrossOrigin
 @Tag(name = "Users Management System", description = "Endpoints for managing users in the system.")
+@SecurityRequirement(name = "JSON Web Token (JWT)")
 public class UserController {
 
     private final UserService service;

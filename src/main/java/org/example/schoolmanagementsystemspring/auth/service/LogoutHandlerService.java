@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.auth;
+package org.example.schoolmanagementsystemspring.auth.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,7 +7,7 @@ import org.example.schoolmanagementsystemspring.token.Token;
 import org.example.schoolmanagementsystemspring.token.TokenRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
  * @Github: <a href="https://github.com/FFreitas997">FFreitas997</a>
  * @Project: School-Management-System-Spring
  */
-@Component
+@Service
 @RequiredArgsConstructor
-public class LogoutHandlerImpl implements LogoutHandler {
+public class LogoutHandlerService implements LogoutHandler {
 
     private final TokenRepository repository;
 

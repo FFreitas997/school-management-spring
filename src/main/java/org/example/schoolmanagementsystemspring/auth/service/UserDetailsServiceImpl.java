@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.auth;
+package org.example.schoolmanagementsystemspring.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.schoolmanagementsystemspring.user.UserRepository;

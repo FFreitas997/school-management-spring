@@ -1,8 +1,11 @@
-package org.example.schoolmanagementsystemspring.auth;
+package org.example.schoolmanagementsystemspring.auth.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.schoolmanagementsystemspring.user.User;
+import org.example.schoolmanagementsystemspring.auth.dto.AuthenticationRequestDto;
+import org.example.schoolmanagementsystemspring.auth.dto.AuthenticationResponseDto;
+import org.example.schoolmanagementsystemspring.auth.dto.RequestRegisterDTO;
+import org.example.schoolmanagementsystemspring.auth.dto.ResponseRegisterDTO;
 
 import java.io.IOException;
 

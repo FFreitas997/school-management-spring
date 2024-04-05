@@ -43,9 +43,6 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         url = "https://school-management-system-spring.herokuapp.com"
                 )
         },
-        security = {
-                @SecurityRequirement(name = "JSON Web Token (JWT)")
-        },
         externalDocs = @ExternalDocumentation(
                 description = "Spring Boot Documentation",
                 url = "https://spring.io/projects/spring-boot"
