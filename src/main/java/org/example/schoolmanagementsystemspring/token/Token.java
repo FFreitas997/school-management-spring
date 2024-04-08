@@ -25,7 +25,7 @@ public class Token {
     @GeneratedValue
     private Integer id;
 
-    @Column(name = "token", nullable = false)
+    @Column(name = "token", nullable = false, length = 1024)
     private String tokenValue;
 
     @Column(name = "type", nullable = false)
@@ -38,11 +38,8 @@ public class Token {
     @Column(name = "revoked", nullable = false)
     private boolean revoked = false;
 
-    @Column(name = "expired_at")
-    private LocalDateTime expiredAt;
-
-    @Column(name = "revoked_at")
-    private LocalDateTime revokedAt;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
