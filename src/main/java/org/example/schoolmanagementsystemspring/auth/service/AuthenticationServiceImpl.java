@@ -90,7 +90,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private User mapToUser(RequestRegisterDTO dto) throws IOException {
+    private User mapToUser(RequestRegisterDTO dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return User
                 .builder()
@@ -104,9 +104,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .isLocked(false)
                 .createdAt(LocalDateTime.now())
                 .createdBy(authentication.getName())
-                .imageName(dto.picture().getOriginalFilename())
-                .imageType(dto.picture().getContentType())
-                .imageData(dto.picture().getBytes())
                 .build();
     }
 
@@ -117,16 +114,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .type(TokenType.BEARER)
                 .expired(false)
                 .revoked(false)
+                .createdAt(LocalDateTime.now())
                 .user(user)
                 .build();
     }
 
     private void revokeAllUserTokens(User user) {
-        tokenRepository.findAllValidTokensByUserId(user.getId()).forEach(token -> {
-            token.setRevoked(true);
-            token.setExpired(true);
-            token.setRevokedAt(LocalDateTime.now());
-            token.setExpiredAt(LocalDateTime.now());
-        });
+        tokenRepository
+                .findAllValidTokensByUserId(user.getId())
+                .forEach(token -> {
+                    token.setRevoked(true);
+                    token.setExpired(true);
+                });
     }
 }

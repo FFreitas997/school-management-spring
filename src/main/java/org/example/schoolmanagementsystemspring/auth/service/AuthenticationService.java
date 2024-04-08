@@ -6,6 +6,7 @@ import org.example.schoolmanagementsystemspring.auth.dto.AuthenticationRequestDt
 import org.example.schoolmanagementsystemspring.auth.dto.AuthenticationResponseDto;
 import org.example.schoolmanagementsystemspring.auth.dto.RequestRegisterDTO;
 import org.example.schoolmanagementsystemspring.auth.dto.ResponseRegisterDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
