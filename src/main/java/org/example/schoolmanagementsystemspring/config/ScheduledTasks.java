@@ -20,9 +20,9 @@ public class ScheduledTasks {
     private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
     private final TokenRepository tokenRepository;
 
-    @Scheduled(cron = "0 20 23 L * ?")
+    @Scheduled(cron = "0 0 23 L * ?")
     public void deleteExpiredTokens() {
         log.info("Deleting expired and revoked tokens");
-        tokenRepository.deleteExpiredTokens();
+        tokenRepository.deleteByExpiredTrueAndRevokedTrue();
     }
 }
