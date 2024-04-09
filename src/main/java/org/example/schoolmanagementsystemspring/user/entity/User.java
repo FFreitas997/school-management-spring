@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.example.schoolmanagementsystemspring.authentication.entity.Token;
-import org.example.schoolmanagementsystemspring.entity.BaseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,7 +26,7 @@ import java.util.List;
 @SuperBuilder
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity implements UserDetails {
+public class User extends UserBaseEntity implements UserDetails {
 
     @Column(name = "first_name", nullable = false)
     private String firstName;

@@ -24,7 +24,7 @@ import java.util.List;
  * @Project: School-Management-System-Spring
  */
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/admin/users")
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 @CrossOrigin

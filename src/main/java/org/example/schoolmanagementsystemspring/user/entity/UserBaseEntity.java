@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.entity;
+package org.example.schoolmanagementsystemspring.user.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @SuperBuilder
 @MappedSuperclass
-public class BaseEntity {
+public class UserBaseEntity {
 
     @Id
     @GeneratedValue
