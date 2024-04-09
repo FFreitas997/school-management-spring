@@ -1,7 +1,7 @@
 package org.example.schoolmanagementsystemspring.config;
 
 import lombok.RequiredArgsConstructor;
-import org.example.schoolmanagementsystemspring.auth.AuthenticationFilter;
+import org.example.schoolmanagementsystemspring.authentication.service.AuthenticationFilterService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,7 +44,7 @@ public class SecurityConfiguration {
             "/swagger-ui.html"
     };
 
-    private final AuthenticationFilter authenticationFilter;
+    private final AuthenticationFilterService authenticationFilterService;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
 
@@ -58,7 +58,7 @@ public class SecurityConfiguration {
                 })
                 .sessionManagement(param -> param.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationFilterService, UsernamePasswordAuthenticationFilter.class)
                 .logout(param -> {
                     param.logoutUrl("/api/v1/auth/logout");
                     param.addLogoutHandler(logoutHandler);
