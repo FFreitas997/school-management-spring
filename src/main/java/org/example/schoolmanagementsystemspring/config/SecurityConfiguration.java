@@ -17,6 +17,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import static org.example.schoolmanagementsystemspring.user.entity.Permission.ADMIN_READ;
+import static org.example.schoolmanagementsystemspring.user.entity.Role.ADMIN;
+import static org.springframework.http.HttpMethod.GET;
+
 /**
  * @author FFreitas
  * @LinkedIn: <a href="https://www.linkedin.com/in/francisco-freitas-a289b91b3/">Francisco Freitas</a>
@@ -31,7 +35,7 @@ public class SecurityConfiguration {
 
     private static final String[] PERMIT_ALL_URLS = {
             "/api/v1/auth/**",
-            "/actuator/**",
+            "/api/v1/admin/management-server",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
@@ -54,6 +58,8 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF because we are using JWT authentication
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(PERMIT_ALL_URLS).permitAll();
+                    auth.requestMatchers("/api/v1/admin/management-server/**").hasRole(ADMIN.name());
+                    auth.requestMatchers(GET,"/api/v1/admin/management-server/**").hasAuthority(ADMIN_READ.name());
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(param -> param.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
