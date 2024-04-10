@@ -16,7 +16,9 @@ import java.time.LocalDateTime;
  * @Project: School-Management-System-Spring
  */
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder

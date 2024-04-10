@@ -19,8 +19,9 @@ import java.util.List;
  * @Project: School-Management-System-Spring
  */
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -64,7 +65,8 @@ public class User extends UserBaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference
-    private List<Token> tokens;
+    @ToString.Exclude
+    private transient List<Token> tokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

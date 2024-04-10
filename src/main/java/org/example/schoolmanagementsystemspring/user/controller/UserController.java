@@ -6,16 +6,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.schoolmanagementsystemspring.authentication.controller.AuthenticationController;
+import org.example.schoolmanagementsystemspring.user.dto.UserRequestDto;
+import org.example.schoolmanagementsystemspring.user.dto.UserResponseDto;
 import org.example.schoolmanagementsystemspring.user.entity.User;
+import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.example.schoolmanagementsystemspring.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author FFreitas
@@ -32,34 +36,83 @@ import java.util.List;
 @SecurityRequirement(name = "JSON Web Token (JWT)")
 public class UserController {
 
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService service;
 
     @Operation(
             summary = "Get all users",
             description = "Get all users in the system.",
             method = "GET",
-            tags = {"Users Management System"},
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "List of all users in the system.",
-                            content = {
-                                    @Content(
-                                            mediaType = "application/json",
-                                            schema = @Schema(implementation = User.class)
-                                    )
-                            }
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "You don't have admin permission to access this resource."
-                    )
-            }
+            tags = {"Users Management System"}
+
     )
     @GetMapping
-    public List<User> getAllUsers() {
-        return service.getAllUsers();
+    @PreAuthorize("hasAuthority('admin:read')")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<UserResponseDto> getAllUsers(@RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size,
+                                             @RequestParam(defaultValue = "firstName") String sort,
+                                             @RequestParam(defaultValue = "asc") String order
+    ) {
+        log.info("Getting all users in the system.");
+        return service.getAllUsers(page, size, sort, order);
     }
 
+    @Operation(
+            summary = "Get user by ID",
+            description = "Get user by ID in the system.",
+            method = "GET",
+            tags = {"Users Management System"}
+    )
+    @GetMapping("/{userID}")
+    @PreAuthorize("hasAuthority('admin:read')")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponseDto getUserById(@PathVariable Integer userID) throws UserNotFoundException {
+        log.info("Getting user by ID: {}", userID);
+        return service.getUserById(userID);
+    }
+
+    @Operation(
+            summary = "Create user",
+            description = "Create user in the system.",
+            method = "POST",
+            tags = {"Users Management System"}
+    )
+    @PostMapping
+    @PreAuthorize("hasAuthority('admin:create')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponseDto createUser(@Valid @RequestBody UserRequestDto request) {
+        log.info("Creating user: {}", request);
+        return service.createUser(request);
+    }
+
+    @Operation(
+            summary = "Update user",
+            description = "Update user in the system.",
+            method = "PUT",
+            tags = {"Users Management System"}
+
+    )
+    @PutMapping("/{userID}")
+    @PreAuthorize("hasAuthority('admin:update')")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponseDto updateUser(@PathVariable Integer userID, @Valid @RequestBody UserRequestDto request) throws UserNotFoundException {
+        log.info("Updating user with ID {}", userID);
+        return service.updateUser(userID, request);
+    }
+
+    @Operation(
+            summary = "Delete user",
+            description = "Delete user in the system.",
+            method = "DELETE",
+            tags = {"Users Management System"}
+    )
+    @DeleteMapping("/{userID}")
+    @PreAuthorize("hasAuthority('admin:delete')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Integer userID) {
+        log.info("Deleting user with ID {}", userID);
+        service.deleteUser(userID);
+    }
     // TODO upload picture endpoint and download picture endpoint
 }
