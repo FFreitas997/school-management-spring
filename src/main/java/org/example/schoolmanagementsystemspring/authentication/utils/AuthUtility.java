@@ -32,7 +32,7 @@ public final class AuthUtility {
                 .isEnabled(true)
                 .isLocked(false)
                 .createdAt(LocalDateTime.now())
-                .createdBy(authentication.getName())
+                .createdBy("System")
                 .build();
     }
 
