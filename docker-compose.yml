@@ -1,0 +1,35 @@
+services:
+
+  database:
+    image: postgres:latest
+    container_name: postgres-school-management
+    environment:
+      POSTGRES_USER: ffreitas
+      POSTGRES_PASSWORD: 29101997
+      POSTGRES_DB: school_management_database
+    ports:
+      - "5430:5432"
+    volumes:
+      - postgres:/var/lib/postgres/data
+    networks:
+      - school-management-network
+
+  spring-application:
+    image: school-management-system-spring:1.0.0
+    container_name: spring-school-management
+    ports:
+      - "8080:8080"
+    networks:
+      - school-management-network
+    volumes:
+      - spring-application:/var/lib/spring-application/data
+    depends_on:
+      - database
+
+volumes:
+  postgres:
+  spring-application:
+
+networks:
+  school-management-network:
+    driver: bridge
