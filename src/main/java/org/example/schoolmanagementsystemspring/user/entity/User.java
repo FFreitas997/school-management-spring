@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.example.schoolmanagementsystemspring.attachment.entity.Attachment;
 import org.example.schoolmanagementsystemspring.authentication.entity.Token;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,19 +55,15 @@ public class User extends UserBaseEntity implements UserDetails {
     @Column(name = "enabled")
     private boolean isEnabled;
 
-    @Column(name = "image_name")
-    private String imageName;
-
-    @Column(name = "image_type")
-    private String imageType;
-
-    @Column(name = "image_data")
-    private byte[] imageData;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference
     @ToString.Exclude
     private transient List<Token> tokens;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ToString.Exclude
+    private transient List<Attachment> attachments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

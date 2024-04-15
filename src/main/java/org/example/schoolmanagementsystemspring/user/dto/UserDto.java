@@ -4,14 +4,17 @@ import lombok.Builder;
 import org.example.schoolmanagementsystemspring.user.entity.Role;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * DTO for {@link org.example.schoolmanagementsystemspring.user.entity.User}
  */
 @Builder
-public record UserResponseDto(
+public record UserDto(
+        Integer id,
         String firstName,
         String lastName,
         String email,
-        Role role
+        String role,
+        List<String> authorities
 ) implements Serializable { }

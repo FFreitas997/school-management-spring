@@ -14,7 +14,6 @@ import org.example.schoolmanagementsystemspring.user.entity.Role;
  * @Project: School-Management-System-Spring
  */
 
-@ToString
 public record UserRequestDto(
 
         @NotBlank(message = "First name mustn't be null or empty")

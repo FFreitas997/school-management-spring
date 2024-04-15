@@ -1,7 +1,8 @@
 package org.example.schoolmanagementsystemspring.user.utils;
 
+import lombok.experimental.UtilityClass;
 import org.example.schoolmanagementsystemspring.user.dto.UserRequestDto;
-import org.example.schoolmanagementsystemspring.user.dto.UserResponseDto;
+import org.example.schoolmanagementsystemspring.user.dto.UserDto;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -14,22 +15,28 @@ import java.time.LocalDateTime;
  * @Project: School-Management-System-Spring
  */
 
-public final class UserUtility {
+@UtilityClass
+public class UserUtility {
 
-    private UserUtility() {}
 
-
-    public static UserResponseDto convertToDto(User user) {
-        return UserResponseDto
+    public UserDto convertToDto(User user) {
+        return UserDto
                 .builder()
+                .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
-                .role(user.getRole())
+                .role(user.getRole().name())
+                .authorities(user
+                        .getAuthorities()
+                        .stream()
+                        .map(Object::toString)
+                        .toList()
+                )
                 .build();
     }
 
-    public static User convertToEntity(UserRequestDto user, PasswordEncoder encoder) {
+    public User convertToEntity(UserRequestDto user, PasswordEncoder encoder) {
         return User
                 .builder()
                 .firstName(user.firstName())

@@ -1,17 +1,12 @@
 package org.example.schoolmanagementsystemspring.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.schoolmanagementsystemspring.authentication.controller.AuthenticationController;
 import org.example.schoolmanagementsystemspring.user.dto.UserRequestDto;
-import org.example.schoolmanagementsystemspring.user.dto.UserResponseDto;
-import org.example.schoolmanagementsystemspring.user.entity.User;
+import org.example.schoolmanagementsystemspring.user.dto.UserDto;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.example.schoolmanagementsystemspring.user.service.UserService;
 import org.slf4j.Logger;
@@ -49,10 +44,10 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasAuthority('admin:read')")
     @ResponseStatus(HttpStatus.OK)
-    public Page<UserResponseDto> getAllUsers(@RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "10") int size,
-                                             @RequestParam(defaultValue = "firstName") String sort,
-                                             @RequestParam(defaultValue = "asc") String order
+    public Page<UserDto> getAllUsers(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size,
+                                     @RequestParam(defaultValue = "firstName") String sort,
+                                     @RequestParam(defaultValue = "asc") String order
     ) {
         log.info("Getting all users in the system.");
         return service.getAllUsers(page, size, sort, order);
@@ -67,7 +62,7 @@ public class UserController {
     @GetMapping("/{userID}")
     @PreAuthorize("hasAuthority('admin:read')")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponseDto getUserById(@PathVariable Integer userID) throws UserNotFoundException {
+    public UserDto getUserById(@PathVariable Integer userID) throws UserNotFoundException {
         log.info("Getting user by ID: {}", userID);
         return service.getUserById(userID);
     }
@@ -81,7 +76,7 @@ public class UserController {
     @PostMapping
     @PreAuthorize("hasAuthority('admin:create')")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponseDto createUser(@Valid @RequestBody UserRequestDto request) {
+    public UserDto createUser(@Valid @RequestBody UserRequestDto request) {
         log.info("Creating user: {}", request);
         return service.createUser(request);
     }
@@ -96,7 +91,7 @@ public class UserController {
     @PutMapping("/{userID}")
     @PreAuthorize("hasAuthority('admin:update')")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponseDto updateUser(@PathVariable Integer userID, @Valid @RequestBody UserRequestDto request) throws UserNotFoundException {
+    public UserDto updateUser(@PathVariable Integer userID, @Valid @RequestBody UserRequestDto request) throws UserNotFoundException {
         log.info("Updating user with ID {}", userID);
         return service.updateUser(userID, request);
     }
