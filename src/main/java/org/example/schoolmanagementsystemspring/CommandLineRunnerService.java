@@ -28,7 +28,7 @@ public class CommandLineRunnerService implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private Logger log = LoggerFactory.getLogger(CommandLineRunnerService.class);
+    private final Logger log = LoggerFactory.getLogger(CommandLineRunnerService.class);
     @Value("${app.user.email}")
     private String email;
     @Value("${app.user.password}")
