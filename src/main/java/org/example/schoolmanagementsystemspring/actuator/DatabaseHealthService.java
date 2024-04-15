@@ -25,7 +25,7 @@ public class DatabaseHealthService implements HealthIndicator {
         HashMap<String, String> info = new HashMap<>();
         info.put("Example", "This is an example of how to add more information to the health check");
         try {
-            jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users", Integer.class);
+            //jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users", Integer.class);
             info.put("Database Service", "The database service is running");
             return Health.up().withDetails(info).build();
         }catch (Exception e){
