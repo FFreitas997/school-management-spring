@@ -6,13 +6,25 @@ services:
     environment:
       POSTGRES_USER: ffreitas
       POSTGRES_PASSWORD: 29101997
+      PGDATA: /var/lib/postgresql/data
       POSTGRES_DB: school_management_database
     ports:
       - "5430:5432"
     volumes:
-      - postgres:/var/lib/postgres/data
+      - postgres:/data/postgres
     networks:
       - school-management-network
+    restart: unless-stopped
+
+  mail-dev:
+    image: maildev/maildev
+    container_name: mail-dev-school-management
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - school-management-network
+    restart: unless-stopped
 
   spring-application:
     image: school-management-system-spring:1.0.0
@@ -25,10 +37,14 @@ services:
       - spring-application:/var/lib/spring-application/data
     depends_on:
       - database
+      - mail-dev
+    restart: unless-stopped
 
 volumes:
   postgres:
+    driver: local
   spring-application:
+    driver: local
 
 networks:
   school-management-network:

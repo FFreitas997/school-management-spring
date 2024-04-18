@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk
+FROM amazoncorretto:21-alpine
 
 LABEL authors="FFreitas"
 LABEL description="This is a Dockerfile for a Spring Boot application"
