@@ -606,3 +606,28 @@ EXPOSE 8080
 
 CMD ["java", "-jar", "School-Management-System-Spring-1.0.0.jar"]
 ````
+
+# Spring AOP
+
+Aspect-Oriented Programming (AOP) complements Object-Oriented Programming (OOP) by providing another way of thinking about program structure.
+
+#### AOP Concepts
+1. Aspect: A module that encapsulates behaviors affecting multiple classes into reusable modules.
+2. Join Point: A point during the execution of a program, such as the execution of a method or the handling of an exception.
+3. Advice: Action taken by an aspect at a particular join point.
+4. Pointcut: A predicate that matches join points.
+
+#### Most Common Use Case of Advice
+1. Logging
+2. Security
+3. Transaction Management
+4. Exception Handling
+5. Performance Monitoring
+6. Caching
+
+#### Types of Advice
+1. Before Advice: Run before the method execution
+2. After Returning Advice: Run after the method returns a result
+3. After Throwing Advice: Run after the method throws an exception
+4. After Advice: Run regardless of the method outcome
+5. Around Advice: Run around the method execution 
