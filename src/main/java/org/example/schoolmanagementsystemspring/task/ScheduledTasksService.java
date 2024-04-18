@@ -1,9 +1,8 @@
 package org.example.schoolmanagementsystemspring.task;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.schoolmanagementsystemspring.authentication.repository.TokenRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +12,11 @@ import org.springframework.stereotype.Service;
  * @Github: <a href="https://github.com/FFreitas997">FFreitas997</a>
  * @Project: School-Management-System-Spring
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ScheduledTasksService {
 
-    private static final Logger log = LoggerFactory.getLogger(ScheduledTasksService.class);
     private final TokenRepository tokenRepository;
 
     @Scheduled(cron = "0 0 23 L * ?")

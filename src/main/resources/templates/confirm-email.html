@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="author" content="School Management System">
+    <meta name="description" content="School Management System">
+    <title>Account Activation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: darkgray;
+        }
+
+        .container {
+            width: 30%;
+            background-color: white;
+            margin: 50px auto 50px auto;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background-color: #5cc593;
+        }
+
+        .welcome-text {
+            font-size: 20px;
+            font-weight: bold;
+            align-self: center;
+        }
+
+        .body-container {
+            display: flex;
+            flex-direction: column;
+            margin: 10px 40px;
+        }
+        .activation-code{
+            margin: 20px auto;
+            padding: 25px 50px;
+            font-size: 30px;
+            background-color: #f0f0f0;
+        }
+        .activation-link{
+            margin: 20px auto;
+            padding: 15px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            background-color: #5cc593;
+        }
+        .greeting{
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img style="align-self: center; width: 70%" alt="logo" src="cid:image" />
+        <span class="welcome-text">Welcome to School Management System</span>
+    </div>
+    <div class="body-container">
+        <h2>Account Activation</h2>
+        <p class="greeting" th:text="'Hello ' + ${name}"></p>
+        <p>Thank you for signing up! Please use the following code to activate your account</p>
+        <div class="activation-code">
+            <span th:text="${activationCode}"></span>
+        </div>
+        <div class="activation-link">
+            <a style="cursor: pointer" target="_blank" th:href="${confirmationURL}">Activate your account</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

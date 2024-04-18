@@ -19,10 +19,10 @@ import java.util.Optional;
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Integer> {
 
-    @Query("select token from Token token where token.tokenValue = :token")
+    @Query("select token from Token token where token.value = :token")
     Optional<Token> findByToken(String token);
 
-    @Query("select token from Token token where token.tokenValue = :token and token.expired = false and token.revoked = false")
+    @Query("select token from Token token where token.value = :token and token.expired = false and token.revoked = false")
     Optional<Token> findByTokenValid(String token);
 
     @Query("select token " +

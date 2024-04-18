@@ -2,6 +2,8 @@ package org.example.schoolmanagementsystemspring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -9,7 +11,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @SpringBootApplication
 @EnableScheduling
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
+@EnableAsync
 public class SchoolManagementSystemSpringApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(SchoolManagementSystemSpringApplication.class, args);
     }

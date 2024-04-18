@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @Github: <a href="https://github.com/FFreitas997">FFreitas997</a>
  * @Project: School-Management-System-Spring
  */
-public record ResponseRegisterDTO(
+public record AuthenticationResponse(
         @JsonProperty("access_token")
         String accessToken,
         @JsonProperty("refresh_token")

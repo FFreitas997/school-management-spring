@@ -2,6 +2,7 @@ package org.example.schoolmanagementsystemspring.user.repository;
 
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -15,7 +16,6 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+    @Query("select u from User u where u.email = :email and u.isLocked = false and u.isEnabled = true")
     Optional<User> findByEmail(String email);
-
-
 }

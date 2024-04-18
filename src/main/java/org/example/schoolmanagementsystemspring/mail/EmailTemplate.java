@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.authentication.entity;
+package org.example.schoolmanagementsystemspring.mail;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +9,13 @@ import lombok.RequiredArgsConstructor;
  * @Github: <a href="https://github.com/FFreitas997">FFreitas997</a>
  * @Project: School-Management-System-Spring
  */
-
 @Getter
 @RequiredArgsConstructor
-public enum TokenType {
-    BEARER("Bearer"),
-    ACTIVATION_CODE("Activation Code");
+public enum EmailTemplate {
 
-    private final String value;
+    WELCOME("welcome"),
+    RESET_PASSWORD("reset-password"),
+    CONFIRM_EMAIL("confirm-email");
+
+    private final String templateName;
 }

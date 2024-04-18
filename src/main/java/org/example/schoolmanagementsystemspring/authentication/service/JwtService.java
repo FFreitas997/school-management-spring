@@ -1,5 +1,6 @@
 package org.example.schoolmanagementsystemspring.authentication.service;
 
+import org.example.schoolmanagementsystemspring.authentication.entity.Token;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 
 import java.util.Date;
@@ -16,7 +17,7 @@ public interface JwtService {
 
     String generateRefreshToken(User user);
 
-    boolean isTokenValid(String token, User user);
+    boolean isTokenValid(Token token, User user);
 
     Date getExpirationDate(String token);
 

@@ -6,6 +6,11 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.example.schoolmanagementsystemspring.attachment.entity.Attachment;
 import org.example.schoolmanagementsystemspring.authentication.entity.Token;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,13 +27,17 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
 @Entity
 @Table(name = "users")
-public class User extends UserBaseEntity implements UserDetails {
+@EntityListeners(AuditingEntityListener.class)
+public class User implements UserDetails {
+
+    @Id
+    @GeneratedValue
+    private Integer id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -46,6 +55,22 @@ public class User extends UserBaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Column(name = "last_modified_at", insertable = false)
+    @LastModifiedDate
+    private LocalDateTime lastModifiedAt;
+
+    @Column(name = "created_by", updatable = false)
+    @CreatedBy
+    private String createdBy;
+
+    @Column(name = "last_modified_by", insertable = false)
+    @LastModifiedBy
+    private String lastModifiedBy;
+
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
 
@@ -55,14 +80,13 @@ public class User extends UserBaseEntity implements UserDetails {
     @Column(name = "enabled")
     private boolean isEnabled;
 
+    @Column(name = "notification")
+    private String notification;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonBackReference
-    @ToString.Exclude
     private transient List<Token> tokens;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonBackReference
-    @ToString.Exclude
     private transient List<Attachment> attachments;
 
     @Override
@@ -96,5 +120,9 @@ public class User extends UserBaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEnabled;
+    }
+
+    public String fullName(){
+        return firstName + " " + lastName;
     }
 }

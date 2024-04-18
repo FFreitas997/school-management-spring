@@ -3,9 +3,8 @@ package org.example.schoolmanagementsystemspring.authentication.service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.schoolmanagementsystemspring.authentication.dto.AuthenticationRequestDto;
-import org.example.schoolmanagementsystemspring.authentication.dto.AuthenticationResponseDto;
+import org.example.schoolmanagementsystemspring.authentication.dto.AuthenticationResponse;
 import org.example.schoolmanagementsystemspring.authentication.dto.RequestRegisterDTO;
-import org.example.schoolmanagementsystemspring.authentication.dto.ResponseRegisterDTO;
 
 import java.io.IOException;
 
@@ -17,9 +16,9 @@ import java.io.IOException;
  */
 public interface AuthenticationService {
 
-    ResponseRegisterDTO register(RequestRegisterDTO requestBody) throws Exception;
+    void register(RequestRegisterDTO requestBody);
 
-    AuthenticationResponseDto authenticate(AuthenticationRequestDto requestBody);
+    AuthenticationResponse authenticate(AuthenticationRequestDto requestBody);
 
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

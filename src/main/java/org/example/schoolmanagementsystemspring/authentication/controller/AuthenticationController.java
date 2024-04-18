@@ -9,14 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.example.schoolmanagementsystemspring.authentication.dto.AuthenticationResponse;
 import org.example.schoolmanagementsystemspring.authentication.service.AuthenticationService;
 import org.example.schoolmanagementsystemspring.authentication.dto.AuthenticationRequestDto;
-import org.example.schoolmanagementsystemspring.authentication.dto.AuthenticationResponseDto;
 import org.example.schoolmanagementsystemspring.authentication.dto.RequestRegisterDTO;
-import org.example.schoolmanagementsystemspring.authentication.dto.ResponseRegisterDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -32,10 +31,10 @@ import java.io.IOException;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @CrossOrigin
-@Tag(name = "Authentication and Register System", description = "Endpoints for authentication and registration in the system.")
+@Tag(name = "Authentication", description = "Endpoints for authentication and registration in the system.")
+@Slf4j
 public class AuthenticationController {
 
-    private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
     private final AuthenticationService service;
 
     @Operation(
@@ -60,7 +59,7 @@ public class AuthenticationController {
                             content = {
                                     @Content(
                                             mediaType = "application/json",
-                                            schema = @Schema(implementation = ResponseRegisterDTO.class)
+                                            schema = @Schema(implementation = AuthenticationResponse.class)
                                     )
                             }
                     ),
@@ -71,10 +70,11 @@ public class AuthenticationController {
             }
     )
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseRegisterDTO register(@Valid @RequestBody RequestRegisterDTO requestBody) throws Exception {
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<Object> register(@Valid @RequestBody RequestRegisterDTO requestBody) {
         log.info("Registering user: {}", requestBody.email());
-        return service.register(requestBody);
+        service.register(requestBody);
+        return ResponseEntity.accepted().build();
     }
 
     @Operation(
@@ -99,7 +99,7 @@ public class AuthenticationController {
                             content = {
                                     @Content(
                                             mediaType = "application/json",
-                                            schema = @Schema(implementation = AuthenticationResponseDto.class)
+                                            schema = @Schema(implementation = AuthenticationResponse.class)
                                     )
                             }
                     )
@@ -107,7 +107,7 @@ public class AuthenticationController {
     )
     @PostMapping("/authenticate")
     @ResponseStatus(HttpStatus.OK)
-    public AuthenticationResponseDto authenticate(@Valid @RequestBody AuthenticationRequestDto requestBody) {
+    public AuthenticationResponse authenticate(@Valid @RequestBody AuthenticationRequestDto requestBody) {
         log.info("Authenticating user: {}", requestBody.email());
         return service.authenticate(requestBody);
     }
@@ -124,7 +124,7 @@ public class AuthenticationController {
                             content = {
                                     @Content(
                                             mediaType = "application/json",
-                                            schema = @Schema(implementation = AuthenticationResponseDto.class)
+                                            schema = @Schema(implementation = AuthenticationResponse.class)
                                     )
                             }
                     )
@@ -134,5 +134,10 @@ public class AuthenticationController {
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         log.info("Refreshing token");
         service.refreshToken(request, response);
+    }
+
+    @GetMapping("/confirm-account")
+    public void confirmAccount() {
+        log.info("Confirming account");
     }
 }

@@ -66,8 +66,6 @@ public class UserServiceImpl implements UserService {
                 .isLocked(false)
                 .isEnabled(true)
                 .expirationDate(LocalDateTime.now().plusYears(1))
-                .createdAt(LocalDateTime.now())
-                .createdBy(principal.getName())
                 .build();
         User response = repository.save(newUser);
         return userDTOMapper.apply(response);
@@ -85,8 +83,6 @@ public class UserServiceImpl implements UserService {
         model.setLastName(user.lastName());
         model.setEmail(user.email());
         model.setPassword(encoder.encode(user.password()));
-        model.setUpdatedAt(LocalDateTime.now());
-        model.setUpdatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
         User response = repository.save(model);
         return userDTOMapper.apply(response);
     }

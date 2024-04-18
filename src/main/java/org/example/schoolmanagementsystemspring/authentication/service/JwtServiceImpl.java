@@ -3,6 +3,7 @@ package org.example.schoolmanagementsystemspring.authentication.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.example.schoolmanagementsystemspring.authentication.entity.Token;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,10 @@ import java.util.Map;
  * @Project: School-Management-System-Spring
  */
 @Service
-public class JwtServiceImpl implements JwtService{
+public class JwtServiceImpl implements JwtService {
 
     @Value("${spring.application.security.jwt.secret}")
-    private String secret;
+    private String secretKey;
 
     @Value("${spring.application.security.jwt.expiration}")
     private long expireIn;
@@ -34,12 +35,14 @@ public class JwtServiceImpl implements JwtService{
 
     @Override
     public String generateToken(User user, Map<String, Object> claims) {
-        return Jwts.builder()
+        return Jwts
+                .builder()
                 .claims(claims)
                 .subject(user.getUsername())
                 .expiration(new Date(System.currentTimeMillis() + expireIn))
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .issuer(issuer)
+                .claim("authorities", user.getRole().getAuthorities())
                 .audience().add(user.getRole().name()).and()
                 .signWith(getSignInKey())
                 .compact();
@@ -47,20 +50,22 @@ public class JwtServiceImpl implements JwtService{
 
     @Override
     public String generateRefreshToken(User user) {
-        return Jwts.builder()
+        return Jwts
+                .builder()
                 .subject(user.getUsername())
                 .expiration(new Date(System.currentTimeMillis() + expireRefreshTokenIn))
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .issuer(issuer)
+                .claim("authorities", user.getRole().getAuthorities())
                 .signWith(getSignInKey())
                 .compact();
     }
 
     @Override
-    public boolean isTokenValid(String token, User user) {
-        if (token == null) return false;
-        return getSubject(token).equals(user.getUsername()) &&
-                getExpirationDate(token).after(new Date());
+    public boolean isTokenValid(Token token, User user) {
+        if (token == null || user == null)
+            return false;
+        return isSubjectValid(token.getValue(), user.getUsername()) && isTokenNonExpired(token.getValue());
     }
 
     @Override
@@ -86,7 +91,15 @@ public class JwtServiceImpl implements JwtService{
     }
 
     private SecretKey getSignInKey() {
-        byte[] secretBytes = Decoders.BASE64.decode(secret);
+        byte[] secretBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(secretBytes);
+    }
+
+    private boolean isSubjectValid(String token, String username) {
+        return getSubject(token).equals(username);
+    }
+
+    private boolean isTokenNonExpired(String token) {
+        return getExpirationDate(token).after(new Date());
     }
 }

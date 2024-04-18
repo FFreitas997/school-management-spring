@@ -14,24 +14,24 @@ import org.example.schoolmanagementsystemspring.user.entity.Role;
  */
 public record RequestRegisterDTO(
 
-        @NotBlank(message = "First name mustn't be null or empty")
+        @NotBlank(message = "First name shouldn't be null or empty")
         @Size(min = 5, max = 100, message = "First name must be between 5 and 100 characters")
         String firstName,
 
-        @NotBlank(message = "Last name mustn't be null or empty")
+        @NotBlank(message = "Last name shouldn't be null or empty")
         @Size(min = 5, max = 100, message = "Last name must be between 5 and 100 characters")
         String lastName,
 
-        @NotBlank(message = "Email mustn't be null or empty")
+        @NotBlank(message = "Email shouldn't be null or empty")
         @Size(min = 6, max = 255, message = "Email must be between 6 and 255 characters")
         @Email(message = "Email must be a valid email", regexp = "^(.+)@(.+)$")
         String email,
 
-        @NotBlank(message = "Password mustn't be null or empty")
-        @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
+        @NotBlank(message = "Password shouldn't be null or empty")
+        @Size(min = 8, max = 255, message = "Password should be between 8 and 255 characters")
         String password,
 
-        @NotNull(message = "Role mustn't be null")
+        @NotNull(message = "Role shouldn't be null")
         Role role
 ) {
 }

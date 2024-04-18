@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.schoolmanagementsystemspring.user.entity.User;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -15,12 +18,12 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "tokens")
+@EntityListeners(AuditingEntityListener.class)
 public class Token {
 
     @Id
@@ -28,20 +31,25 @@ public class Token {
     private Integer id;
 
     @Column(name = "token", nullable = false, length = 1024)
-    private String tokenValue;
+    private String value;
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private TokenType type = TokenType.BEARER;
 
     @Column(name = "expired", nullable = false)
-    private boolean expired = false;
+    private boolean expired;
 
     @Column(name = "revoked", nullable = false)
-    private boolean revoked = false;
+    private boolean revoked;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreatedDate
     private LocalDateTime createdAt;
+
+    @Column(name = "created_by", updatable = false)
+    @CreatedBy
+    private String createdBy;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

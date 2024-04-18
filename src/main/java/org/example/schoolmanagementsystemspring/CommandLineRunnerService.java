@@ -1,10 +1,9 @@
 package org.example.schoolmanagementsystemspring;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.example.schoolmanagementsystemspring.user.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,11 +23,12 @@ import static org.example.schoolmanagementsystemspring.user.entity.Role.ADMIN;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CommandLineRunnerService implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final Logger log = LoggerFactory.getLogger(CommandLineRunnerService.class);
+
     @Value("${app.user.email}")
     private String email;
     @Value("${app.user.password}")
@@ -55,8 +55,7 @@ public class CommandLineRunnerService implements CommandLineRunner {
                 .expirationDate(LocalDateTime.now().plusYears(10))
                 .isEnabled(true)
                 .isLocked(false)
-                .createdAt(LocalDateTime.now())
-                .createdBy("System")
+                .notification("User generated automatically by the system")
                 .build();
         userRepository.save(saveUser);
     }

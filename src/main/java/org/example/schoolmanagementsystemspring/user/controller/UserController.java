@@ -5,12 +5,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.schoolmanagementsystemspring.user.dto.UserRequestDto;
 import org.example.schoolmanagementsystemspring.user.dto.UserDto;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.example.schoolmanagementsystemspring.user.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,9 +28,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @Tag(name = "Users Management System", description = "Endpoints for managing users in the system.")
 @SecurityRequirement(name = "JSON Web Token (JWT)")
+@Slf4j
 public class UserController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService service;
 
     @Operation(
@@ -109,5 +108,4 @@ public class UserController {
         log.info("Deleting user with ID {}", userID);
         service.deleteUser(userID);
     }
-    // TODO upload picture endpoint and download picture endpoint
 }
