@@ -4,11 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.schoolmanagementsystemspring.attachment.dto.ResponseAttachmentDto;
 import org.example.schoolmanagementsystemspring.attachment.entity.Attachment;
 import org.example.schoolmanagementsystemspring.attachment.service.AttachmentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -33,10 +32,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Attachments Management System", description = "Endpoints for managing attachments in the system.")
 @SecurityRequirement(name = "JSON Web Token (JWT)")
+@Slf4j
 public class AttachmentController {
 
     private final AttachmentService service;
-    private static final Logger log = LoggerFactory.getLogger(AttachmentController.class);
 
     @Operation(
             summary = "Create attachment",

@@ -26,8 +26,6 @@ public final class AttachmentUtility {
                 .data(file.getBytes())
                 .profilePicture(isProfilePicture)
                 .user(user)
-                .createdAt(LocalDateTime.now())
-                .createdBy(user.getEmail())
                 .build();
     }
 
