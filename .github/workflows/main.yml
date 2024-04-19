@@ -80,4 +80,4 @@ jobs:
           context: .
           dockerfile: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/school-management-spring:$(date-'%Y%m%d%H%M%S')
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/school-management-spring:latest
