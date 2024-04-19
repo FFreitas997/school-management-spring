@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.aop.users;
+package org.example.schoolmanagementsystemspring.user.aspect;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,15 +45,18 @@ public class UserServiceAspect {
             result = proceedingJoinPoint.proceed();
         } catch (Exception e) {
             log.error("An exception has occurred: {}", e.getMessage());
+            throw e;
+        }finally {
+            Instant endTime = Instant.now();
+
+            log.info("Method Finished the execution");
+            log.info("Duration: {} seconds || {} milliseconds",
+                    Duration.between(start, endTime).toSeconds(),
+                    Duration.between(start, endTime).toMillis()
+            );
         }
 
-        Instant endTime = Instant.now();
 
-        log.info("Method Finished the execution");
-        log.info("Duration: {} seconds || {} milliseconds",
-                Duration.between(start, endTime).toSeconds(),
-                Duration.between(start, endTime).toMillis()
-        );
 
         if (result instanceof Page<?> page) {
             log.info("Total Elements: {}", page.getTotalElements());

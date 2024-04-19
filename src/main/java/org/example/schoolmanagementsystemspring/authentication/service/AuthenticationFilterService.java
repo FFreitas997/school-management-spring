@@ -43,7 +43,7 @@ public class AuthenticationFilterService extends OncePerRequestFilter {
         log.info("Filtering request to authenticate ...");
         String authHeader = req.getHeader(AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith(TokenType.BEARER.getValue())) {
-            log.info("Request without Authorization header ...");
+            log.warn("Request Filter: Request without Authorization header ...");
             chain.doFilter(req, res);
             return;
         }
@@ -55,7 +55,7 @@ public class AuthenticationFilterService extends OncePerRequestFilter {
         String token = authHeader.substring(7);
         String subject = jwtService.getSubject(token);
         User user = userRepository
-                .findByEmail(subject)
+                .findByEmailValid(subject)
                 .orElse(null);
         Token tokenEntity = tokenRepository
                 .findByTokenValid(token)

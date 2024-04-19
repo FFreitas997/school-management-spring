@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.aop.auth;
+package org.example.schoolmanagementsystemspring.authentication.aspect;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,22 +29,21 @@ public class AuthenticationServiceAspect {
 
         Instant start = Instant.now();
 
-        Object result = null;
+        Object result;
 
         try {
             result = proceedingJoinPoint.proceed();
         } catch (Exception e) {
             log.error("An exception has occurred: {}", e.getMessage());
+            throw e;
+        }finally {
+            Instant endTime = Instant.now();
+            log.info("Method Finished the execution");
+            log.info("Duration: {} seconds || {} milliseconds",
+                    Duration.between(start, endTime).toSeconds(),
+                    Duration.between(start, endTime).toMillis()
+            );
         }
-
-        Instant endTime = Instant.now();
-
-        log.info("Method Finished the execution");
-        log.info("Duration: {} seconds || {} milliseconds",
-                Duration.between(start, endTime).toSeconds(),
-                Duration.between(start, endTime).toMillis()
-        );
-
         return result;
     }
 }

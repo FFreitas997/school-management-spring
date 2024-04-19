@@ -7,7 +7,6 @@ import org.example.schoolmanagementsystemspring.attachment.repository.Attachment
 import org.example.schoolmanagementsystemspring.attachment.util.AttachmentUtility;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.example.schoolmanagementsystemspring.user.repository.UserRepository;
-import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,7 @@ public class AttachmentServiceImpl implements AttachmentService{
         if (file == null) throw new IllegalArgumentException("File is required");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository
-                .findByEmail(authentication.getName())
+                .findByEmailValid(authentication.getName())
                 .orElseThrow(() -> new SecurityException("The user is not authenticated or something is wrong with security context."));
         if (isProfilePicture) {
             Attachment attachment = repository

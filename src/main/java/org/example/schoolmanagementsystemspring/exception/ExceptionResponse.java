@@ -1,9 +1,11 @@
 package org.example.schoolmanagementsystemspring.exception;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author FFreitas
@@ -12,10 +14,12 @@ import java.util.Map;
  * @Project: School-Management-System-Spring
  */
 @Builder
-public record ErrorValidation(
-        String message,
-        Integer status,
-        LocalDateTime current,
-        Map<String, String> fields
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public record ExceptionResponse(
+        Integer errorCode,
+        String description,
+        String error,
+        Set<String> validationErrors,
+        Map<String, String> errors
 ) {
 }

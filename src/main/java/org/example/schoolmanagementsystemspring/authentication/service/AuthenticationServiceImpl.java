@@ -10,6 +10,9 @@ import org.example.schoolmanagementsystemspring.authentication.dto.Authenticatio
 import org.example.schoolmanagementsystemspring.authentication.dto.RequestRegisterDTO;
 import org.example.schoolmanagementsystemspring.authentication.entity.Token;
 import org.example.schoolmanagementsystemspring.authentication.entity.TokenType;
+import org.example.schoolmanagementsystemspring.authentication.exception.InvalidTokenException;
+import org.example.schoolmanagementsystemspring.authentication.exception.TokenNotFoundException;
+import org.example.schoolmanagementsystemspring.authentication.exception.UserAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.authentication.mapper.TokenAuthMapper;
 import org.example.schoolmanagementsystemspring.authentication.mapper.UserAuthMapper;
 import org.example.schoolmanagementsystemspring.authentication.repository.TokenRepository;
@@ -17,6 +20,7 @@ import org.example.schoolmanagementsystemspring.mail.Email;
 import org.example.schoolmanagementsystemspring.mail.EmailService;
 import org.example.schoolmanagementsystemspring.mail.EmailTemplate;
 import org.example.schoolmanagementsystemspring.user.entity.User;
+import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.example.schoolmanagementsystemspring.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -24,16 +28,19 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
  * @author FFreitas
@@ -56,6 +63,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String subject;
     @Value("${email.code.length}")
     private Integer length;
+    @Value("${email.code.expiration}")
+    private Integer codeExpiration;
 
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
@@ -67,10 +76,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final EmailService emailService;
 
 
-
     @Override
-    public void register(RequestRegisterDTO requestBody) {
+    public void register(RequestRegisterDTO requestBody) throws UserAlreadyExistsException {
         User userMapped = userMapper.apply(requestBody, encoder);
+        var checkUser = userRepository
+                .findByEmail(requestBody.email());
+        if(checkUser.isPresent())
+            throw new UserAlreadyExistsException("User already exists");
+
         User userSaved = userRepository.save(userMapped);
 
         String code = generateCode(length);
@@ -85,10 +98,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequestDto requestBody) {
+    public AuthenticationResponse authenticate(AuthenticationRequestDto requestBody) throws UserNotFoundException {
         User user = userRepository
-                .findByEmail(requestBody.email())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .findByEmailValid(requestBody.email())
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + requestBody.email()));
         String generatedToken = jwtService.generateToken(user, Collections.emptyMap());
         String generatedRefreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
@@ -100,7 +113,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void refreshToken(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        String authHeader = req.getHeader(HttpHeaders.AUTHORIZATION);
+        String authHeader = req.getHeader(AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
@@ -109,7 +122,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String username = jwtService.getSubject(refreshToken.getValue());
         if (username != null) {
             User user = userRepository
-                    .findByEmail(username)
+                    .findByEmailValid(username)
                     .orElse(null);
             if (jwtService.isTokenValid(refreshToken, user)) {
                 String accessToken = jwtService.generateToken(user, Collections.emptyMap());
@@ -120,6 +133,54 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 new ObjectMapper().writeValue(res.getOutputStream(), authResponse);
             }
         }
+    }
+
+    @Override
+    public void confirmAccount(String token) throws TokenNotFoundException, InvalidTokenException, UserNotFoundException {
+        Token activationCode = tokenRepository
+                .findByValueAndType(token, TokenType.ACTIVATION_CODE)
+                .orElseThrow(() -> new TokenNotFoundException("Activation Code not found"));
+
+        if (activationCode.isRevoked() || activationCode.isExpired()) {
+            log.error("Activation Code {} is not valid", token);
+            throw new InvalidTokenException("Activation Code is not valid");
+        }
+
+        Predicate<Token> isCodeValid = param ->
+                param.getCreatedAt()
+                        .plusMinutes(codeExpiration)
+                        .isAfter(LocalDateTime.now());
+
+        if (!isCodeValid.test(activationCode)) {
+            activationCode.setExpired(true);
+            activationCode.setRevoked(true);
+            tokenRepository.save(activationCode);
+            log.error("Activation Code {} is not valid", token);
+            throw new InvalidTokenException("Activation Code is not valid");
+        }
+        User user = userRepository
+                .findById(activationCode.getUser() == null ? -1 : activationCode.getUser().getId())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        user.setEnabled(true);
+        user.setNotification("Your account has been activated successfully");
+        userRepository.save(user);
+        activationCode.setRevoked(true);
+        activationCode.setExpired(true);
+        tokenRepository.save(activationCode);
+    }
+
+    @Override
+    public void generateActivationCode(String email) throws UserNotFoundException {
+        User user = userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        String code = generateCode(length);
+        Token token = buildCode(user, code);
+        tokenRepository.save(token);
+        emailService
+                .sendEmail(buildConfirmEmail(code, user))
+                .handleAsync((res, ex) -> handleSendEmailAsync(user, ex))
+                .thenAccept(log::info);
     }
 
     private void revokeAllUserTokens(User user) {
@@ -144,7 +205,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
     }
 
-    private String handleSendEmailAsync(User userSaved, Throwable exception){
+    private String handleSendEmailAsync(User userSaved, Throwable exception) {
         return exception != null ?
                 "An error occurred while sending the email to " + userSaved.getEmail() :
                 "The email was sent successfully to " + userSaved.getEmail();
@@ -161,7 +222,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return code.toString();
     }
 
-    private Email buildConfirmEmail (String code, User user){
+    private Email buildConfirmEmail(String code, User user) {
         HashMap<String, Object> properties = new HashMap<>();
         properties.put("name", user.fullName());
         properties.put("confirmationURL", confirmationURL);

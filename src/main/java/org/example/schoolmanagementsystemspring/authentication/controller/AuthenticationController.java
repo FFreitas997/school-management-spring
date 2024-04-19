@@ -1,6 +1,7 @@
 package org.example.schoolmanagementsystemspring.authentication.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,9 +12,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.schoolmanagementsystemspring.authentication.dto.AuthenticationResponse;
+import org.example.schoolmanagementsystemspring.authentication.exception.InvalidTokenException;
+import org.example.schoolmanagementsystemspring.authentication.exception.TokenNotFoundException;
+import org.example.schoolmanagementsystemspring.authentication.exception.UserAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.authentication.service.AuthenticationService;
 import org.example.schoolmanagementsystemspring.authentication.dto.AuthenticationRequestDto;
 import org.example.schoolmanagementsystemspring.authentication.dto.RequestRegisterDTO;
+import org.example.schoolmanagementsystemspring.exception.ExceptionResponse;
+import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,14 +70,23 @@ public class AuthenticationController {
                             }
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad request. User already exists."
+                            responseCode = "409",
+                            description = "User already exists.",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Generic error",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
                     )
             }
     )
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<Object> register(@Valid @RequestBody RequestRegisterDTO requestBody) {
+    public ResponseEntity<Object> register(@Valid @RequestBody RequestRegisterDTO requestBody) throws UserAlreadyExistsException {
         log.info("Registering user: {}", requestBody.email());
         service.register(requestBody);
         return ResponseEntity.accepted().build();
@@ -102,12 +117,25 @@ public class AuthenticationController {
                                             schema = @Schema(implementation = AuthenticationResponse.class)
                                     )
                             }
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User Not Found",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Generic error",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
                     )
             }
     )
     @PostMapping("/authenticate")
-    @ResponseStatus(HttpStatus.OK)
-    public AuthenticationResponse authenticate(@Valid @RequestBody AuthenticationRequestDto requestBody) {
+    public AuthenticationResponse authenticate(@Valid @RequestBody AuthenticationRequestDto requestBody) throws UserNotFoundException {
         log.info("Authenticating user: {}", requestBody.email());
         return service.authenticate(requestBody);
     }
@@ -127,6 +155,13 @@ public class AuthenticationController {
                                             schema = @Schema(implementation = AuthenticationResponse.class)
                                     )
                             }
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Generic error",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
                     )
             }
     )
@@ -136,8 +171,97 @@ public class AuthenticationController {
         service.refreshToken(request, response);
     }
 
-    @GetMapping("/confirm-account")
-    public void confirmAccount() {
-        log.info("Confirming account");
+    @Operation(
+            summary = "Activate account",
+            description = "Activate the account of a user in the system.",
+            method = "PUT",
+            tags = {"Authentication and Register System"},
+            parameters = {
+                    @Parameter(
+                            name = "code",
+                            description = "Activation code to activate the account.",
+                            required = true,
+                            schema = @Schema(type = "string")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Account activated successfully."
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User not found.",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Invalid Token",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Token Not Found",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Generic error",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    )
+            }
+    )
+    @PutMapping("/activate-account")
+    public ResponseEntity<Object> confirmAccount(@RequestParam String code) throws UserNotFoundException, InvalidTokenException, TokenNotFoundException {
+        service.confirmAccount(code);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(
+            summary = "Generate activation code",
+            description = "Generate an activation code for a user in the system.",
+            method = "POST",
+            tags = {"Authentication and Register System"},
+            parameters = {
+                    @Parameter(
+                            name = "email",
+                            description = "Email to generate the activation code.",
+                            required = true,
+                            schema = @Schema(type = "string")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "202",
+                            description = "Activation code generated successfully."
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User not found.",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Generic error.",
+                            content = @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping("/generate-activation-code")
+    public ResponseEntity<Object> generateActivationCode(@RequestParam String email) throws UserNotFoundException {
+        service.generateActivationCode(email);
+        return ResponseEntity.accepted().build();
     }
 }

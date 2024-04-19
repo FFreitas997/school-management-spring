@@ -41,7 +41,7 @@ public class CommandLineRunnerService implements CommandLineRunner {
     @Override
     public void run(String... args) {
         User mainUser = userRepository
-                .findByEmail(email)
+                .findByEmailValid(email)
                 .orElse(null);
         if (mainUser != null) return;
         log.info("Creating main user: {}", email);
