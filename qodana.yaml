@@ -1,7 +1,6 @@
 version: "1.0"
 linter: jetbrains/qodana-jvm-community:2023.3
 
-#include:
-#  - name: JavadocDeclaration
 include:
   - name: UNUSED_IMPORT
+  - name: JavadocDeclaration
