@@ -39,7 +39,7 @@ public class UserServiceAspect {
 
         Instant start = Instant.now();
 
-        Object result = null;
+        Object result;
 
         try {
             result = proceedingJoinPoint.proceed();
