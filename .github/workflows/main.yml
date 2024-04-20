@@ -1,15 +1,22 @@
 name: School Management Spring CI
 
 on:
+  workflow_dispatch:
+  pull_request:
   push:
-    branches:
-      - main
+    branches: # Specify your branches here
+      - main # The 'main' branch
+      - 'releases/*' # The release branches
 
 
 jobs:
   default:
-    name: Build the spring project and analyze with SonarQube
+    name: Build the spring project and analyze
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: write
 
     steps:
 
@@ -17,7 +24,8 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
+          fetch-depth: 0  # a full history is required for pull request analysis
 
         # Set up JDK 21
       - name: Set up JDK 21
@@ -34,25 +42,13 @@ jobs:
           postgresql user: ${{ secrets.POSTGRES_USERNAME }}
           postgresql password: ${{ secrets.POSTGRES_PASSWORD }}
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-
-      - name: Build and Analyze with SonarQube
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v2023.3
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+
+      - name: "Build application"
+        env:
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
@@ -62,7 +58,37 @@ jobs:
           ADMIN_ACCOUNT_PASSWORD: ${{ secrets.ADMIN_ACCOUNT_PASSWORD }}
         run: |
           mvn clean
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=FFreitas997_school-management-spring
+          mvn -B package --file pom.xml
+
+#      - name: Cache SonarCloud packages
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar
+#          restore-keys: ${{ runner.os }}-sonar
+#
+#      - name: Cache Maven packages
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: ${{ runner.os }}-m2
+#
+#
+#      - name: Build and Analyze with SonarQube
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+#          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+#          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+#          POSTGRES_USERNAME: ${{ secrets.POSTGRES_USERNAME }}
+#          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+#          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+#          ADMIN_ACCOUNT_PASSWORD: ${{ secrets.ADMIN_ACCOUNT_PASSWORD }}
+#        run: |
+#          mvn clean
+#          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=FFreitas997_school-management-spring
 
         # Docker login
       - name: Login to Docker Hub
