@@ -2,8 +2,6 @@ package org.example.schoolmanagementsystemspring.attachment.service;
 
 import org.example.schoolmanagementsystemspring.attachment.dto.ResponseAttachmentDto;
 import org.example.schoolmanagementsystemspring.attachment.entity.Attachment;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

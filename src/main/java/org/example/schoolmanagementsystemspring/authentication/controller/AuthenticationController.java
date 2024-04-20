@@ -36,7 +36,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@CrossOrigin
 @Tag(name = "Authentication", description = "Endpoints for authentication and registration in the system.")
 @Slf4j
 public class AuthenticationController {

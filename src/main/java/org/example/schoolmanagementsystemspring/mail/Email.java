@@ -1,7 +1,6 @@
 package org.example.schoolmanagementsystemspring.mail;
 
 import lombok.Builder;
-import lombok.Getter;
 import org.springframework.core.io.Resource;
 
 import java.util.HashMap;

@@ -28,7 +28,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/user/attachments")
-@CrossOrigin
 @RequiredArgsConstructor
 @Tag(name = "Attachments Management System", description = "Endpoints for managing attachments in the system.")
 @SecurityRequirement(name = "JSON Web Token (JWT)")

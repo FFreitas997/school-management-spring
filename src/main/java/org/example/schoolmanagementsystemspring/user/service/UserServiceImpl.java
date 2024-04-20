@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserRequestDto user) {
-        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
         User newUser = User
                 .builder()
                 .firstName(user.firstName())

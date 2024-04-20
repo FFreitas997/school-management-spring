@@ -1,7 +1,6 @@
 package org.example.schoolmanagementsystemspring.user.dto;
 
 import lombok.Builder;
-import org.example.schoolmanagementsystemspring.user.entity.Role;
 
 import java.io.Serializable;
 import java.util.List;

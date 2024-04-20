@@ -65,7 +65,6 @@ public class SecurityConfiguration {
         String actuatorURL = "/api/v1/admin/management-server/**";
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF because we are using JWT authentication
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(PERMIT_ALL_URLS).permitAll();
                     auth.requestMatchers(actuatorURL).hasRole(ADMIN.name());
@@ -95,8 +94,8 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowedMethods(List.of("*"));
-        config.setAllowedOrigins(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedOrigins(List.of("http://localhost:4200"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;

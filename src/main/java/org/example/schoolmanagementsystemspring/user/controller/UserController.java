@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/admin/users")
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
-@CrossOrigin
 @Tag(name = "Users Management System", description = "Endpoints for managing users in the system.")
 @SecurityRequirement(name = "JSON Web Token (JWT)")
 @Slf4j

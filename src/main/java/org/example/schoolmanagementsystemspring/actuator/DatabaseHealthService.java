@@ -3,7 +3,6 @@ package org.example.schoolmanagementsystemspring.actuator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,14 +17,11 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class DatabaseHealthService implements HealthIndicator {
 
-    private final JdbcTemplate jdbcTemplate;
-
     @Override
     public Health health() {
         HashMap<String, String> info = new HashMap<>();
         info.put("Example", "This is an example of how to add more information to the health check");
         try {
-            //jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users", Integer.class);
             info.put("Database Service", "The database service is running");
             return Health.up().withDetails(info).build();
         }catch (Exception e){

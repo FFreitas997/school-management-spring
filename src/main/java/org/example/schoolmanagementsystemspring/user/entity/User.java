@@ -1,9 +1,7 @@
 package org.example.schoolmanagementsystemspring.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.example.schoolmanagementsystemspring.attachment.entity.Attachment;
 import org.example.schoolmanagementsystemspring.authentication.entity.Token;
 import org.springframework.data.annotation.CreatedBy;
