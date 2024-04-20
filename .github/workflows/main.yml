@@ -13,7 +13,7 @@ jobs:
 
     steps:
 
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: "Checkout code"
         uses: actions/checkout@v4
         with:
@@ -25,42 +25,33 @@ jobs:
         with:
           distribution: 'corretto'
           java-version: 21
-        # maildev
-        #Postgres
 
-        # Cache Maven packages
-      - name: Cache SonarQube packages
-        uses: actions/cache@v1
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-
-        # Cache Maven packages
       - name: Cache Maven packages
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
-        # Unit Test
-#      - name: Unit Test
-#        run: mvn -B test --file pom.xml
-
-        # Analyze with SonarQube
       - name: Build and analyze
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=school-management-spring -Dsonar.projectName='school-management-spring'
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=FFreitas997_school-management-spring
+
+      - name: Unit Test
+        run: mvn -B test --file pom.xml
 
         # Build the project
       - name: "Build application"
         run: |
           mvn clean
           mvn -B package --file pom.xml
-
 
         # Set up Docker Buildx
       - name: Set up Docker Buildx

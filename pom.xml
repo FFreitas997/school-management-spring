@@ -15,7 +15,10 @@
     <description>School-Management-System-Spring</description>
     <properties>
         <java.version>21</java.version>
+        <sonar.organization>ffreitas997</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
