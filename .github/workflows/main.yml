@@ -49,6 +49,7 @@ jobs:
 
       - name: "Build application"
         env:
+          PROFILE: prod
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
