@@ -1,3 +1,9 @@
 spring:
   ##profiles:
     ##active: dev
+
+  datasource:
+    url: jdbc:postgresql://localhost:5434/database?useSSL=false&serverTimezone=Europe/Lisbon
+    username: username
+    password: xpto
+    driver-class-name: org.postgresql.Driver
