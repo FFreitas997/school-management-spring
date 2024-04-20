@@ -1,0 +1,88 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enable: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+  banner:
+    location: banner
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}?useSSL=false&serverTimezone=Europe/Lisbon
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+  application:
+    name: School-Management-System-Spring
+    security:
+      jwt:
+        secret: ${JWT_SECRET}
+        expiration: 3600000 # 1 hour
+        refresh-token-expiration: 86400000 # 1 day
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    filter: true
+    operations-sorter: method
+  show-actuator: true
+  disable-i18n: false
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /api/v1/admin/management-server
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  user:
+    email: francisco.freitas.ff@gmail.com # admin account
+    password: ${ADMIN_ACCOUNT_PASSWORD}
+    firstName: Francisco
+    lastName: Freitas
+
+logging:
+  include-application-name: true
+  file:
+    path: ./logs
+  pattern:
+    dateformat: dd-MM-yyyy HH:mm:ss
+
+email:
+  from: francisco.freitas.ff@gmail.com
+  subject: Account Confirmation
+  confirmation:
+    frontend-url: http://localhost:4200/confirm-account
+  code:
+    length: 6
+    expiration: 15 # 15 minutes
