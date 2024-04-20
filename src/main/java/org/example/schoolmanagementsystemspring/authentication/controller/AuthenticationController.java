@@ -20,7 +20,6 @@ import org.example.schoolmanagementsystemspring.authentication.dto.Authenticatio
 import org.example.schoolmanagementsystemspring.authentication.dto.RequestRegisterDTO;
 import org.example.schoolmanagementsystemspring.exception.ExceptionResponse;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
