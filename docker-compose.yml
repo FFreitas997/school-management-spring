@@ -29,6 +29,13 @@ services:
   spring-application:
     image: school-management-system-spring:1.0.0
     container_name: spring-school-management
+    environment:
+      MAIL_DEV: 29101997
+      POSTGRES_DB: school_management_database
+      POSTGRES_USER: ffreitas
+      POSTGRES_PASSWORD: 29101997
+      JWT_SECRET: 1ziBfO3ls0+XFugZPnPLiLbTWoGDxB8e3W1kKISsJZPfIvstCGVqJEV67f0hqWGtjqvIwuQAEQD23/Pzt5p0/A==
+      ADMIN_PASSWORD: adminschooldev
     ports:
       - "8080:8080"
     networks:
