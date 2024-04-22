@@ -36,3 +36,4 @@ build/
 ### Spring ###
 /src/main/resources/application-dev.yml
 .log
+docker-compose.yml
