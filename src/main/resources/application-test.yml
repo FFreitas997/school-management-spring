@@ -3,10 +3,10 @@ spring:
     init:
       mode: always
   mail:
-    host: mail-school-management
+    host: localhost
     port: 1025
     username: ffreitas
-    password: 29101997
+    password: password
     properties:
       mail:
         smtp:
@@ -20,14 +20,10 @@ spring:
   banner:
     location: banner
   jpa:
-    show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
   application:
     name: School-Management-System-Spring
     security:
@@ -63,7 +59,7 @@ management:
 app:
   user:
     email: francisco.freitas.ff@gmail.com #admin account
-    password: adminschooldev
+    password: password123456
     firstName: Francisco
     lastName: Freitas
 logging:

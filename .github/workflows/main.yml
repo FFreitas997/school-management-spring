@@ -45,6 +45,8 @@ jobs:
             java-version: 21
 
         - name: Run Tests
+          env:
+            PROFILE: test
           run: |
             mvn clean
             mvn test

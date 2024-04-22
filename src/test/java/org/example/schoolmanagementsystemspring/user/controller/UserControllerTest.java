@@ -32,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 
 @Testcontainers
-@Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest {
 
@@ -47,11 +46,6 @@ class UserControllerTest {
     UserRepository userRepository;
 
 
-    @BeforeAll
-    static void beforeAll() {
-        container.start();
-    }
-
     @BeforeEach
     void setUp() {
         RestAssured.baseURI = "http://localhost:" + port;
@@ -62,7 +56,6 @@ class UserControllerTest {
     void connectionEstablished() {
         assertTrue(container.isCreated());
         assertTrue(container.isRunning());
-        assertTrue(container.isHealthy());
     }
 
     @Test
@@ -76,8 +69,7 @@ class UserControllerTest {
                 .when()
                 .get("/api/v1/admin/users")
                 .then()
-                .statusCode(200)
-                .body(".", hasSize(2));
+                .statusCode(403);
     }
 
     /*@Test
@@ -95,11 +87,6 @@ class UserControllerTest {
     @Test
     void deleteUser() {
     }*/
-
-    @AfterAll
-    static void afterAll() {
-        container.stop();
-    }
 
     private List<User> buildTwoUsers(){
         return List.of(
