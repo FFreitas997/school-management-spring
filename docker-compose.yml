@@ -46,7 +46,7 @@ services:
     volumes:
       - spring-application:/var/lib/spring-application/data
     depends_on:
-      - database
+      - postgres
       - mail-dev
     restart: unless-stopped
 
