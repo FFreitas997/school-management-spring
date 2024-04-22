@@ -2,7 +2,6 @@ FROM amazoncorretto:21-alpine
 
 LABEL authors="FFreitas"
 LABEL description="This is a Dockerfile for a Spring Boot application"
-LABEL version="1.0.0"
 
 WORKDIR /app
 

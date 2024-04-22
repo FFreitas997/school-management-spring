@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class ApplicationInfo implements InfoContributor {
+public class ApplicationInfoService implements InfoContributor {
     @Override
     public void contribute(Info.Builder builder) {
         builder.withDetail("Application Name", "School Management System")
