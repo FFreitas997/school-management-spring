@@ -8,8 +8,9 @@ on:
 
 
 jobs:
-  default:
-    name: Scan, Build, and Push Docker Image
+
+  qodana-scan:
+    name: Scan Qodana
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -17,58 +18,87 @@ jobs:
       checks: write
 
     steps:
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: "Checkout code"
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
           fetch-depth: 0  # a full history is required for pull request analysis
-
-        # Set up JDK 21
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'corretto'
-          java-version: 21
-
-      - name: Set PostgresSQL
-        uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: '15'
-          postgresql db: ${{ secrets.POSTGRES_DB }}
-          postgresql user: ${{ secrets.POSTGRES_USERNAME }}
-          postgresql password: ${{ secrets.POSTGRES_PASSWORD }}
-
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2023.3
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
 
-      - name: "Build application"
-        env:
-          PROFILE: prod
-          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USERNAME: ${{ secrets.POSTGRES_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          ADMIN_ACCOUNT_PASSWORD: ${{ secrets.ADMIN_ACCOUNT_PASSWORD }}
-        run: |
-          mvn clean
-          mvn -B package --file pom.xml
+  run-tests:
+    needs: qodana-scan
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+          with:
+            ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
+            fetch-depth: 0  # a full history is required for pull request analysis
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        - name: Set up JDK 21
+          uses: actions/setup-java@v4
+          with:
+            distribution: 'corretto'
+            java-version: 21
 
-      - name: Docker Build and Push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          dockerfile: Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/school-management-spring:latest
+        - name: Run Tests
+          env:
+            PROFILE: test
+          run: |
+            mvn clean
+            mvn test
+
+
+  docker-build-push:
+    needs: run-tests
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: "Checkout code"
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
+        fetch-depth: 0  # a full history is required for pull request analysis
+
+      # Set up JDK 21
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'corretto'
+        java-version: 21
+
+    - name: "Build application"
+      env:
+        PROFILE: prod
+        SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+        SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        POSTGRES_USERNAME: ${{ secrets.POSTGRES_USERNAME }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        ADMIN_ACCOUNT_EMAIL: ${{ secrets.ADMIN_ACCOUNT_EMAIL }}
+        ADMIN_ACCOUNT_PASSWORD: ${{ secrets.ADMIN_ACCOUNT_PASSWORD }}
+      run: |
+        mvn clean
+        mvn -B package -Dmaven.test.skip --file pom.xml
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        dockerfile: Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/school-management-spring:latest

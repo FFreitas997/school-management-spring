@@ -30,15 +30,14 @@ services:
     image: school-management-system-spring:1.0.0
     container_name: spring-school-management
     environment:
-      PROFILE: dev
-      MAIL_DEV: 29101997
+      PROFILE: docker
       POSTGRES_DB: school_management_database
       POSTGRES_USER: ffreitas
       POSTGRES_PASSWORD: password
       JWT_SECRET: 1ziBfO3ls0+XFugZPnPLiLbTWoGDxB8e3W1kKISsJZPfIvstCGVqJEV67f0hqWGtjqvIwuQAEQD23/Pzt5p0/A==
       ADMIN_PASSWORD: adminschooldev
-      MAIL_DEV_USERNAME: "ffreitas"
-      MAIL_DEV_PASSWORD: "29101997"
+      MAIL_DEV_USERNAME: ffreitas
+      MAIL_DEV_PASSWORD: 29101997
     ports:
       - "8080:8080"
     networks:
@@ -46,7 +45,7 @@ services:
     volumes:
       - spring-application:/var/lib/spring-application/data
     depends_on:
-      - database
+      - postgres
       - mail-dev
     restart: unless-stopped
 
