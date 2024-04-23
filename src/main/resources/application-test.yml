@@ -5,7 +5,7 @@ spring:
   mail:
     host: localhost
     port: 1025
-    username: ffreitas
+    username: username
     password: password
     properties:
       mail:
@@ -58,10 +58,10 @@ management:
       show-details: always
 app:
   user:
-    email: francisco.freitas.ff@gmail.com #admin account
+    email: admin.account@gmail.com #admin account
     password: password123456
-    firstName: Francisco
-    lastName: Freitas
+    firstName: Admin
+    lastName: Account
 logging:
   include-application-name: true
   file:
@@ -70,7 +70,7 @@ logging:
     dateformat: dd-MM-yyyy HH:mm:ss
 
 email:
-  from: francisco.freitas.ff@gmail.com
+  from: admin.account@gmail.com
   subject: Account Confirmation
   confirmation:
     frontend-url: http://localhost:4200/confirm-account

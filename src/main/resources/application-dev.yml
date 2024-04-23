@@ -1,9 +1,9 @@
 spring:
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${SMTP_USERNAME}
-    password: ${SMTP_PASSWORD}
+    host: localhost
+    port: 1025
+    username: username
+    password: password
     properties:
       mail:
         smtp:
@@ -14,34 +14,34 @@ spring:
         connectiontimeout: 5000
         timeout: 3000
         writetimeout: 5000
-
-  servlet:
-    multipart:
-      enabled: true
-      max-file-size: 50MB
-      max-request-size: 50MB
   banner:
     location: banner
   datasource:
-    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}?useSSL=false&serverTimezone=Europe/Lisbon
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/school_management_database?useSSL=false&serverTimezone=Europe/Lisbon
+    username: ffreitas
+    password: password
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
-
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
   application:
     name: School-Management-System-Spring
     security:
       jwt:
         secret: ${JWT_SECRET}
-        expiration: 3600000 # 1 hour
-        refresh-token-expiration: 86400000 # 1 day
-
+        expiration: 300000 # 5 minutes
+        refresh-token-expiration: 3600000 # 1 hour
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
 springdoc:
   api-docs:
     enabled: true
@@ -53,7 +53,6 @@ springdoc:
   disable-i18n: false
   default-produces-media-type: application/json
   default-consumes-media-type: application/json
-
 management:
   endpoints:
     web:
@@ -63,14 +62,12 @@ management:
   endpoint:
     health:
       show-details: always
-
 app:
   user:
-    email: ${ADMIN_ACCOUNT_EMAIL} # admin account
-    password: ${ADMIN_ACCOUNT_PASSWORD}
+    email: francisco.freitas.ff@gmail.com #admin account
+    password: password123456
     firstName: Francisco
     lastName: Freitas
-
 logging:
   include-application-name: true
   file:
@@ -85,4 +82,7 @@ email:
     frontend-url: http://localhost:4200/confirm-account
   code:
     length: 6
-    expiration: 15 # 15 minutes
+    expiration: 10 # 10 minutes
+
+# server.port=8080
+# server.servlet.context-path=/api/v1
