@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 
 @Testcontainers
+@Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest {
 
