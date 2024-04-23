@@ -3,8 +3,6 @@ name: School Management Spring CI
 on:
   pull_request:
     branches: [release]
-  push:
-    branches: [release]
 
 
 jobs:
