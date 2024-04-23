@@ -23,18 +23,18 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
     @Query("select token from Token token where token.value = :token")
     Optional<Token> findByToken(String token);
 
-    @Query("select token from Token token where token.value = :token and token.expired = false and token.revoked = false")
+    @Query("select token from Token token where token.value = :token and token.expired = false")
     Optional<Token> findByTokenValid(String token);
 
     @Query("select token " +
             "from Token token " +
             "inner join User user on token.user.id = user.id " +
-            "where user.id = :userID and (token.expired = false or token.revoked = false)")
+            "where user.id = :userID and token.expired = false")
     List<Token> findAllValidTokensByUserId(Integer userID);
 
     @Modifying
     @Transactional
-    void deleteByExpiredTrueAndRevokedTrue();
+    void deleteByExpiredTrue();
 
     @Query("select t from Token t where t.value = ?1 and t.type = ?2")
     Optional<Token> findByValueAndType(@NonNull String value, @NonNull TokenType type);

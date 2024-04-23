@@ -21,7 +21,6 @@ public class TokenAuthMapper implements BiFunction<String, User, Token> {
                 .value(token)
                 .type(TokenType.BEARER)
                 .expired(false)
-                .revoked(false)
                 .user(user)
                 .build();
     }

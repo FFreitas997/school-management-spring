@@ -21,6 +21,6 @@ public class ScheduledTasksService {
     @Scheduled(cron = "0 0 23 L * ?")
     public void deleteExpiredTokens() {
         log.info("Deleting expired and revoked tokens");
-        tokenRepository.deleteByExpiredTrueAndRevokedTrue();
+        tokenRepository.deleteByExpiredTrue();
     }
 }

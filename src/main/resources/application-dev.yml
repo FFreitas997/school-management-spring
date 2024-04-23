@@ -26,7 +26,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -34,7 +34,7 @@ spring:
     name: School-Management-System-Spring
     security:
       jwt:
-        secret: ${JWT_SECRET}
+        secret: 1ziBfO3ls0+XFugZPnPLiLbTWoGDxB8e3W1kKISsJZPfIvstCGVqJEV67f0hqWGtjqvIwuQAEQD23/Pzt5p0/A==
         expiration: 300000 # 5 minutes
         refresh-token-expiration: 3600000 # 1 hour
   servlet:

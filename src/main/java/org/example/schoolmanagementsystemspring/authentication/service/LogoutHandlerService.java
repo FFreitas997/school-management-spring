@@ -42,7 +42,6 @@ public class LogoutHandlerService implements LogoutHandler {
 
     private void handleToken(Token token) {
         token.setExpired(true);
-        token.setRevoked(true);
         repository.save(token);
     }
 }

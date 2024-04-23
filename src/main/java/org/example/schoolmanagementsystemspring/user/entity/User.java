@@ -2,6 +2,7 @@ package org.example.schoolmanagementsystemspring.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.example.schoolmanagementsystemspring.attachment.entity.Attachment;
 import org.example.schoolmanagementsystemspring.authentication.entity.Token;
 import org.springframework.data.annotation.CreatedBy;
@@ -26,9 +27,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
@@ -51,6 +53,9 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate

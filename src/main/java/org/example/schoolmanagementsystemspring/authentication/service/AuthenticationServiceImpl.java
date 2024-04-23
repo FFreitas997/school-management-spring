@@ -139,7 +139,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .findByValueAndType(token, TokenType.ACTIVATION_CODE)
                 .orElseThrow(() -> new TokenNotFoundException("Activation Code not found"));
 
-        if (activationCode.isRevoked() || activationCode.isExpired()) {
+        if (activationCode.isExpired()) {
             log.error("Activation Code {} is not valid", token);
             throw new InvalidTokenException("Activation Code is not valid");
         }
@@ -151,7 +151,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (!isCodeValid.test(activationCode)) {
             activationCode.setExpired(true);
-            activationCode.setRevoked(true);
             tokenRepository.save(activationCode);
             log.error("Activation Code {} is not valid", token);
             throw new InvalidTokenException("Activation Code is not valid");
@@ -162,7 +161,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEnabled(true);
         user.setNotification("Your account has been activated successfully");
         userRepository.save(user);
-        activationCode.setRevoked(true);
         activationCode.setExpired(true);
         tokenRepository.save(activationCode);
     }
@@ -184,7 +182,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private void revokeAllUserTokens(User user) {
         if (user == null) return;
         Consumer<Token> revokeToken = token -> {
-            token.setRevoked(true);
             token.setExpired(true);
         };
         tokenRepository
@@ -198,7 +195,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .value(code)
                 .type(TokenType.ACTIVATION_CODE)
                 .expired(false)
-                .revoked(false)
                 .user(user)
                 .build();
     }
