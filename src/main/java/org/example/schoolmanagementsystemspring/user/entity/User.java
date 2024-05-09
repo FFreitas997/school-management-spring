@@ -1,9 +1,11 @@
 package org.example.schoolmanagementsystemspring.user.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.example.schoolmanagementsystemspring.attachment.entity.Attachment;
 import org.example.schoolmanagementsystemspring.authentication.entity.Token;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,6 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -32,7 +35,9 @@ import java.util.List;
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 @EntityListeners(AuditingEntityListener.class)
-public class User implements UserDetails {
+public class User implements UserDetails, Principal {
+
+    // TODO later implement User Actions History for Administration purposes
 
     @Id
     @GeneratedValue
@@ -73,23 +78,14 @@ public class User implements UserDetails {
     @LastModifiedBy
     private String lastModifiedBy;
 
-    @Column(name = "expiration_date")
-    private LocalDateTime expirationDate;
-
-    @Column(name = "locked")
-    private boolean isLocked;
-
     @Column(name = "enabled")
     private boolean isEnabled;
 
-    @Column(name = "notification")
-    private String notification;
+    @Column(name = "profile_image")
+    private String profileImage;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private transient List<Token> tokens;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private transient List<Attachment> attachments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -106,12 +102,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return expirationDate.isAfter(LocalDateTime.now());
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !isLocked;
+        return true;
     }
 
     @Override
@@ -124,7 +120,6 @@ public class User implements UserDetails {
         return isEnabled;
     }
 
-    public String fullName(){
-        return firstName + " " + lastName;
-    }
+    @Override
+    public String getName() { return firstName + " " + lastName; }
 }

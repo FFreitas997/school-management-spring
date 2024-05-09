@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "events")
+@Table(name = "school_events")
 @EntityListeners(AuditingEntityListener.class)
 public class Event {
 
@@ -38,13 +38,13 @@ public class Event {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "start", nullable = false)
+    @Column(name = "event_start", nullable = false)
     private LocalDateTime start;
 
-    @Column(name = "end", nullable = false)
+    @Column(name = "event_end", nullable = false)
     private LocalDateTime end;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "event_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private EventType type;
 

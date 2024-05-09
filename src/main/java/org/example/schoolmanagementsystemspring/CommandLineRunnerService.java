@@ -51,10 +51,7 @@ public class CommandLineRunnerService implements CommandLineRunner {
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .role(ADMIN)
-                .expirationDate(LocalDateTime.now().plusYears(10))
                 .isEnabled(true)
-                .isLocked(false)
-                .notification("User generated automatically by the system")
                 .build();
         userRepository.save(saveUser);
     }

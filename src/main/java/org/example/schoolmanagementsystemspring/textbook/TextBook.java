@@ -2,7 +2,6 @@ package org.example.schoolmanagementsystemspring.textbook;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.schoolmanagementsystemspring.attachment.entity.Attachment;
 import org.example.schoolmanagementsystemspring.course.Course;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -54,9 +53,8 @@ public class TextBook {
     @Column(name = "link")
     private String link;
 
-    @ManyToOne
-    @JoinColumn(name = "cover_image")
-    private Attachment attachment;
+    @Column(name = "cover_filename")
+    private String coverFileName;
 
     @ManyToMany(mappedBy = "textBooks")
     private List<Course> courses;

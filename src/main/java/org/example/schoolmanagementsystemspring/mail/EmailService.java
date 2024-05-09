@@ -20,6 +20,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_MIXED;
 
 /**
+ * The EmailService class is a service that handles the sending of emails.
+ * It uses the JavaMailSender to send emails and the SpringTemplateEngine to process the email templates.
+ * It provides a method for sending an email asynchronously.
+ *
  * @author FFreitas
  * <a href="https://www.linkedin.com/in/francisco-freitas-a289b91b3/">LinkedIn</a>
  * <a href="https://github.com/FFreitas997/">Github</a>
@@ -32,6 +36,15 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine engine;
 
+    /**
+     * The sendEmail method sends an email asynchronously.
+     * It creates a MimeMessage, sets the from, to, and subject fields, processes the email template, and sends the email.
+     * If an error occurs while sending the email, it logs the error and returns a failed future.
+     * Otherwise, it returns a completed future with the value true.
+     *
+     * @param email the email to be sent.
+     * @return a CompletableFuture indicating the result of the email sending operation.
+     */
     @Async
     public CompletableFuture<Boolean> sendEmail(@NonNull Email email) {
         log.info("Execution Thread: {}", Thread.currentThread().getName());
@@ -58,7 +71,6 @@ public class EmailService {
                         helper.addInline(key, resource);
                 } catch (MessagingException e) {
                     log.error("An error occurred while adding the inline resource to the email");
-                    log.error("Error message: {}", e.getMessage());
                 }
             };
 
