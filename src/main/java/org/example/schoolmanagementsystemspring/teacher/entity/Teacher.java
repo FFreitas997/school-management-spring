@@ -34,9 +34,6 @@ public class Teacher extends User {
     @Column(name = "phone_number", length = 9, nullable = false)
     private String phoneNumber;
 
-    @Column(name = "email", nullable = false)
-    private String email;
-
     @Column(name = "department", nullable = false)
     private String department;
 

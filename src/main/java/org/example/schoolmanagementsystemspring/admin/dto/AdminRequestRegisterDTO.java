@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import org.example.schoolmanagementsystemspring.user.entity.Role;
 
 /**
@@ -11,6 +12,7 @@ import org.example.schoolmanagementsystemspring.user.entity.Role;
  * <a href="https://www.linkedin.com/in/francisco-freitas-a289b91b3/">LinkedIn</a>
  * <a href="https://github.com/FFreitas997/">Github</a>
  */
+@Builder
 public record RequestRegisterDTO(
 
         @NotBlank(message = "First name shouldn't be null or empty")
