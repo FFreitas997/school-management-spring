@@ -98,9 +98,7 @@ class UserControllerTest {
                         .email("francisco@gmail.com")
                         .password("password")
                         .role(Role.ADMIN)
-                        .isLocked(false)
                         .isEnabled(true)
-                        .expirationDate(LocalDateTime.now().plusYears(1))
                         .build(),
                 User
                         .builder()
@@ -109,9 +107,7 @@ class UserControllerTest {
                         .email("francisco.fernando@gmail.com")
                         .password("password123")
                         .role(Role.STUDENT)
-                        .isLocked(false)
                         .isEnabled(true)
-                        .expirationDate(LocalDateTime.now().plusYears(1))
                         .build()
         );
     }

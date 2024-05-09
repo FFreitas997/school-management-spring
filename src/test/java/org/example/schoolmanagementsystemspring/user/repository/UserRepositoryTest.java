@@ -56,7 +56,6 @@ class UserRepositoryTest {
         assertEquals("francisco.freitas@gmail.com", savedUser.getEmail());
         assertEquals("password", savedUser.getPassword());
         assertEquals(Role.ADMIN, savedUser.getRole());
-        assertTrue(savedUser.getExpirationDate().isAfter(LocalDateTime.now()));
         assertNotNull(savedUser.getId());
         assertNotNull(savedUser.getCreatedAt());
         assertNotEquals(0, savedUser.getAuthorities().size());
@@ -70,9 +69,7 @@ class UserRepositoryTest {
                 .email("francisco.freitas@gmail.com")
                 .password("password")
                 .role(Role.ADMIN)
-                .isLocked(false)
                 .isEnabled(true)
-                .expirationDate(LocalDateTime.now().plusYears(1))
                 .build();
     }
 }
