@@ -80,3 +80,6 @@ email:
 
 # server.port=8080
 # server.servlet.context-path=/api/v1
+
+storage:
+  profile-directory: "/application/storage/profiles"

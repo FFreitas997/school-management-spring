@@ -26,7 +26,17 @@ public enum BusinessErrorCodes {
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid credentials"),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "Invalid token"),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Token expired"),
-    TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "Token not found");
+    TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "Token not found"),
+
+    SCHOOL_NOT_FOUND(HttpStatus.NOT_FOUND, "School not found"),
+
+
+
+    TEACHER_ALREADY_EXISTS(HttpStatus.CONFLICT, "Teacher already exists"),
+    TEACHER_NOT_FOUND(HttpStatus.NOT_FOUND, "Teacher not found"),
+    STUDENT_ALREADY_HAS_RESPONSIBLE(HttpStatus.CONFLICT, "Student already has responsable"),
+
+    ;
 
     private final HttpStatus httpStatus;
     private final String description;

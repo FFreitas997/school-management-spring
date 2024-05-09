@@ -86,3 +86,6 @@ email:
   code:
     length: 6
     expiration: 15 # 15 minutes
+
+storage:
+  profile-directory: "/application/storage/profiles"

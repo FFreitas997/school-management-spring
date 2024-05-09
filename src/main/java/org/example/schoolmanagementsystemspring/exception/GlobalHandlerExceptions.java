@@ -5,6 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.schoolmanagementsystemspring.authentication.exception.InvalidTokenException;
 import org.example.schoolmanagementsystemspring.authentication.exception.TokenNotFoundException;
 import org.example.schoolmanagementsystemspring.authentication.exception.UserAlreadyExistsException;
+import org.example.schoolmanagementsystemspring.school.exception.SchoolNotFoundException;
+import org.example.schoolmanagementsystemspring.teacher.exception.StudentAlreadyHasResponsableException;
+import org.example.schoolmanagementsystemspring.teacher.exception.TeacherAlreadyExistsException;
+import org.example.schoolmanagementsystemspring.teacher.exception.TeacherNotFoundException;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -170,6 +174,76 @@ public class GlobalHandlerExceptions {
                                 .build()
                 );
     }
+
+    // School Exceptions
+    @ExceptionHandler(SchoolNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleException(SchoolNotFoundException ex) {
+        return ResponseEntity
+                .status(SCHOOL_NOT_FOUND.getHttpStatus())
+                .body(
+                        ExceptionResponse
+                                .builder()
+                                .errorCode(SCHOOL_NOT_FOUND.getHttpStatus().value())
+                                .description(SCHOOL_NOT_FOUND.getDescription())
+                                .error(ex.getMessage())
+                                .build()
+                );
+    }
+
+
+
+
+    // Teacher Exceptions
+    @ExceptionHandler(TeacherAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> handleException(TeacherAlreadyExistsException ex) {
+        return ResponseEntity
+                .status(TEACHER_ALREADY_EXISTS.getHttpStatus())
+                .body(
+                        ExceptionResponse
+                                .builder()
+                                .errorCode(TEACHER_ALREADY_EXISTS.getHttpStatus().value())
+                                .description(TEACHER_ALREADY_EXISTS.getDescription())
+                                .error(ex.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(TeacherNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleException(TeacherNotFoundException ex) {
+        return ResponseEntity
+                .status(TEACHER_NOT_FOUND.getHttpStatus())
+                .body(
+                        ExceptionResponse
+                                .builder()
+                                .errorCode(TEACHER_NOT_FOUND.getHttpStatus().value())
+                                .description(TEACHER_NOT_FOUND.getDescription())
+                                .error(ex.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(StudentAlreadyHasResponsableException.class)
+    public ResponseEntity<ExceptionResponse> handleException(StudentAlreadyHasResponsableException ex) {
+        return ResponseEntity
+                .status(STUDENT_ALREADY_HAS_RESPONSIBLE.getHttpStatus())
+                .body(
+                        ExceptionResponse
+                                .builder()
+                                .errorCode(STUDENT_ALREADY_HAS_RESPONSIBLE.getHttpStatus().value())
+                                .description(STUDENT_ALREADY_HAS_RESPONSIBLE.getDescription())
+                                .error(ex.getMessage())
+                                .build()
+                );
+    }
+
+
+
+
+
+
+
+
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleException(Exception ex) {

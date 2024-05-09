@@ -1,18 +1,22 @@
 package org.example.schoolmanagementsystemspring.storage;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.lang.NonNull;
+import org.springframework.scheduling.annotation.Async;
 
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author FFreitas
  * <a href="https://www.linkedin.com/in/francisco-freitas-a289b91b3/">LinkedIn</a>
  * <a href="https://github.com/FFreitas997/">Github</a>
  */
-public interface  {
+public interface StorageService {
 
+    @Async
+    CompletableFuture<Void> storeProfileImage(@NonNull String fileName, @NonNull byte[] content);
 
-    Future<Void> uploadFile(MultipartFile file);
+    Resource loadProfileImageResource(String fileName);
 
-    byte[] downloadFile(String path, String fileName);
+    void delete(String fileName);
 }
