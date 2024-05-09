@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.teacher.helpers;
+package org.example.schoolmanagementsystemspring.teacher.dto;
 
 import org.example.schoolmanagementsystemspring.student.GradeLevel;
 

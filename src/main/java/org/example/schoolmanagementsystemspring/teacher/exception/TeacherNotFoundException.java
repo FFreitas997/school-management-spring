@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.teacher;
+package org.example.schoolmanagementsystemspring.teacher.exception;
 
 /**
  * @author FFreitas

@@ -1,5 +1,7 @@
-package org.example.schoolmanagementsystemspring.teacher;
+package org.example.schoolmanagementsystemspring.teacher.mappers;
 
+import org.example.schoolmanagementsystemspring.teacher.dto.RequestTeacher;
+import org.example.schoolmanagementsystemspring.teacher.entity.Teacher;
 import org.example.schoolmanagementsystemspring.user.entity.Role;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +14,10 @@ import java.util.function.Function;
  * <a href="https://github.com/FFreitas997/">Github</a>
  */
 @Component
-public class TeacherMapper implements Function<RegisterTeacherDTO, Teacher>{
+public class TeacherMapper implements Function<RequestTeacher, Teacher>{
 
     @Override
-    public Teacher apply(RegisterTeacherDTO request) {
+    public Teacher apply(RequestTeacher request) {
         return Teacher
                 .builder()
                 .firstName(request.firstName())
@@ -30,10 +32,7 @@ public class TeacherMapper implements Function<RegisterTeacherDTO, Teacher>{
                 .experience(request.experience())
                 .recognition(request.recognition())
                 .teachMethod(request.teachMethod())
-                .expirationDate(LocalDateTime.now().plusYears(1))
-                .notification("Account has been created, needs to be activated")
                 .isEnabled(false)
-                .isLocked(false)
                 .build();
     }
 }

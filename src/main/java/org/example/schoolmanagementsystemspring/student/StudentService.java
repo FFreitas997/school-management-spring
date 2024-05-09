@@ -1,6 +1,10 @@
-package org.example.schoolmanagementsystemspring.student;/**
- * @author FFreitas 
+package org.example.schoolmanagementsystemspring.student;
+
+/**
+ * @author FFreitas
  * <a href="https://www.linkedin.com/in/francisco-freitas-a289b91b3/">LinkedIn</a>
  * <a href="https://github.com/FFreitas997/">Github</a>
- */public interface StudentService {
+ */
+public interface StudentService {
+
 }

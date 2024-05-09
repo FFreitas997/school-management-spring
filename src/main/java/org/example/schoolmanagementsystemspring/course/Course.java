@@ -5,7 +5,7 @@ import lombok.*;
 import org.example.schoolmanagementsystemspring.school.entity.School;
 import org.example.schoolmanagementsystemspring.student.GradeLevel;
 import org.example.schoolmanagementsystemspring.student.Student;
-import org.example.schoolmanagementsystemspring.teacher.Teacher;
+import org.example.schoolmanagementsystemspring.teacher.entity.Teacher;
 import org.example.schoolmanagementsystemspring.textbook.TextBook;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -61,7 +61,12 @@ public class Course {
     @JoinColumn(name = "school_id")
     private School school;
 
-    @ManyToMany(mappedBy = "enrolledCourses")
+    @ManyToMany
+    @JoinTable(
+            name = "course_students",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
     private List<Student> students;
 
     @ManyToMany

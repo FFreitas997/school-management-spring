@@ -1,6 +1,5 @@
-package org.example.schoolmanagementsystemspring.teacher.helpers;
+package org.example.schoolmanagementsystemspring.teacher.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 
@@ -15,7 +14,6 @@ import java.util.List;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record TeacherResponse(
-        Integer id,
         String email,
         String phoneNumber,
         String department,
@@ -24,5 +22,8 @@ public record TeacherResponse(
         String recognition,
         String teachMethod,
         String schoolName,
-        List<CourseDTO> courses
+        String schoolID,
+        String firstName,
+        String lastName,
+        String description
 ) { }

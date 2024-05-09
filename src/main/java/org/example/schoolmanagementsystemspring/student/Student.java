@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 import org.example.schoolmanagementsystemspring.course.Course;
 import org.example.schoolmanagementsystemspring.parent.Parent;
 import org.example.schoolmanagementsystemspring.school.entity.School;
-import org.example.schoolmanagementsystemspring.teacher.Teacher;
+import org.example.schoolmanagementsystemspring.teacher.entity.Teacher;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -59,13 +59,8 @@ public class Student extends User {
     @JoinColumn(name = "school_id")
     private School school;
 
-    @ManyToMany
-    @JoinTable(
-            name = "student_course",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    private List<Course> enrolledCourses;
+    @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
+    private List<Course> courses;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate

@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.teacher.helpers;
+package org.example.schoolmanagementsystemspring.teacher.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
