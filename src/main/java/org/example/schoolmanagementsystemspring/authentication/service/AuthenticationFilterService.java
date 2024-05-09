@@ -23,6 +23,12 @@ import java.io.IOException;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
+ * The AuthenticationFilterService class is a filter that intercepts each request once and performs authentication.
+ * It extends OncePerRequestFilter, which ensures a single execution per request dispatch.
+ * It uses the JwtService, UserRepository, and TokenRepository to perform its operations.
+ * It checks the Authorization header of the request, and if it starts with "Bearer", it attempts to authenticate the request.
+ * If the request is already authenticated, or if the Authorization header is missing or does not start with "Bearer", it forwards the request without modifying it.
+ *
  * @author FFreitas
  * <a href="https://www.linkedin.com/in/francisco-freitas-a289b91b3/">LinkedIn</a>
  * <a href="https://github.com/FFreitas997/">Github</a>
@@ -36,6 +42,21 @@ public class AuthenticationFilterService extends OncePerRequestFilter {
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
 
+    /**
+     * The doFilterInternal method is overridden to perform the authentication.
+     * It first checks the Authorization header of the request.
+     * If the header is missing or does not start with "Bearer", it forwards the request without modifying it.
+     * If the request is already authenticated, it also forwards the request without modifying it.
+     * Otherwise, it retrieves the token from the header, gets the subject from the token, retrieves the user and the token entity from the repositories, and checks if the token is valid.
+     * If the token is valid, it creates a new UsernamePasswordAuthenticationToken, sets its details, and sets it in the SecurityContext.
+     * Finally, it forwards the request.
+     *
+     * @param req   the HttpServletRequest object containing the details of the request.
+     * @param res   the HttpServletResponse object for sending the response.
+     * @param chain the FilterChain object for forwarding the request.
+     * @throws ServletException if a servlet-specific error occurs.
+     * @throws IOException      if an input or output error occurs.
+     */
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res, @NonNull FilterChain chain) throws ServletException, IOException {
         log.info("Filtering request to authenticate ...");
