@@ -70,5 +70,4 @@ public class Assignment {
     @Column(name = "last_modified_by", insertable = false)
     @LastModifiedBy
     private String lastModifiedBy;
-
 }

@@ -10,6 +10,7 @@ import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundExcep
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -41,8 +42,11 @@ public interface TeacherService {
 
     void createAssignment(RequestAssignment request);
 
-    // list assigments per course
-    // list assigments per student, course
-    // give grade to student
+    Page<AssignmentResponse> getAssignmentsByCourseAndDelivery(String courseCode, LocalDateTime delivery, int page, int size);
+
+    AssignmentResponse getAssignmentByCourseAndDeliveryAndStudent(String courseCode, LocalDateTime delivery, Integer studentID);
+
+
+    // give grade to student and feedback
     // disable assigment
 }

@@ -2,6 +2,8 @@ package org.example.schoolmanagementsystemspring.teacher.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.schoolmanagementsystemspring.assignment.Assignment;
+import org.example.schoolmanagementsystemspring.assignment.AssignmentID;
 import org.example.schoolmanagementsystemspring.assignment.AssignmentRepository;
 import org.example.schoolmanagementsystemspring.authentication.service.AuthenticationService;
 import org.example.schoolmanagementsystemspring.course.Course;
@@ -28,6 +30,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -55,6 +58,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final StudentResponseMapper studentResponseMapper;
     private final CourseResponseMapper courseResponseMapper;
     private final AssignmentMapper assignmentMapper;
+    private final AssignmentResponseMapper assignmentResponseMapper;
 
     @Override
     public void register(RequestTeacher request) throws UserNotFoundException, SchoolNotFoundException, TeacherAlreadyExistsException {
@@ -230,6 +234,11 @@ public class TeacherServiceImpl implements TeacherService {
     public void createAssignment(RequestAssignment request) {
         log.info("Creating assignment: {}", request.title());
 
+        if (assignmentRepository.existsById_CourseCodeAndId_DeliverAssignmentAndEnabledTrue(request.courseCode(), request.deliverAssignment())) {
+            log.error("Assignment has already created for course: {} and deliver: {}", request.courseCode(), request.deliverAssignment());
+            return;
+        }
+
         var results = studentRepository.findStudentsByCourseCode(request.courseCode());
 
         var assignments = results
@@ -238,5 +247,43 @@ public class TeacherServiceImpl implements TeacherService {
                 .toList();
 
         assignmentRepository.saveAll(assignments);
+    }
+
+    @Override
+    public Page<AssignmentResponse> getAssignmentsByCourseAndDelivery(String courseCode, LocalDateTime delivery, int page, int size) {
+        log.info("Getting assignments by course: {} and delivery: {}", courseCode, delivery);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastModifiedAt").ascending());
+
+        var results = assignmentRepository.findById_CourseCodeAndId_DeliverAssignmentAndEnabledTrue(courseCode, delivery, pageable);
+
+        Function<Assignment, AssignmentResponse> handleResult = param -> AssignmentResponse
+                .builder()
+                .courseCode(param.getId().getCourseCode())
+                .studentID(param.getId().getStudentID())
+                .delivery(param.getId().getDeliverAssignment())
+                .title(param.getTitle())
+                .points(param.getPoints())
+                .submissionType(param.getSubmissionType())
+                .assignmentType(param.getAssignmentType())
+                .build();
+
+        return results.map(handleResult);
+    }
+
+    @Override
+    public AssignmentResponse getAssignmentByCourseAndDeliveryAndStudent(String courseCode, LocalDateTime delivery, Integer studentID) {
+        log.info("Getting assignment by course: {}, delivery: {} and student: {}", courseCode, delivery, studentID);
+
+        AssignmentID assignmentID = AssignmentID.builder()
+                .courseCode(courseCode)
+                .studentID(studentID)
+                .deliverAssignment(delivery)
+                .build();
+
+        var result = assignmentRepository.findById(assignmentID)
+                .orElseThrow(() -> new IllegalArgumentException("Assignment not found"));
+
+        return assignmentResponseMapper.apply(result);
     }
 }
