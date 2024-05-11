@@ -2,8 +2,290 @@
 	"info": {
 		"_postman_id": "738c7af2-cb8f-441a-abf9-88064d8238e5",
 		"name": "User Management",
+		"description": "Administration endpoint to manage Users in the application",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_uid": "7485179-738c7af2-cb8f-441a-abf9-88064d8238e5"
 	},
-	"item": []
+	"item": [
+		{
+			"name": "Get Users",
+			"id": "88cc1617-c59b-4f81-9603-8376dfbe03b1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcmFuY2lzY28uZnJlaXRhcy5mZkBnbWFpbC5jb20iLCJleHAiOjE3MTMyODg4MDAsImlhdCI6MTcxMzI4ODUwMCwiaXNzIjoiU2Nob29sLU1hbmFnZW1lbnQtU3lzdGVtLVNwcmluZyIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJhZG1pbjpjcmVhdGUifSx7ImF1dGhvcml0eSI6ImFkbWluOnJlYWQifSx7ImF1dGhvcml0eSI6ImFkbWluOnVwZGF0ZSJ9LHsiYXV0aG9yaXR5IjoiYWRtaW46ZGVsZXRlIn0seyJhdXRob3JpdHkiOiJ0ZWFjaGVyOmNyZWF0ZSJ9LHsiYXV0aG9yaXR5IjoidGVhY2hlcjpyZWFkIn0seyJhdXRob3JpdHkiOiJ0ZWFjaGVyOnVwZGF0ZSJ9LHsiYXV0aG9yaXR5IjoidGVhY2hlcjpkZWxldGUifSx7ImF1dGhvcml0eSI6InN0dWRlbnQ6Y3JlYXRlIn0seyJhdXRob3JpdHkiOiJzdHVkZW50OnJlYWQifSx7ImF1dGhvcml0eSI6InN0dWRlbnQ6dXBkYXRlIn0seyJhdXRob3JpdHkiOiJzdHVkZW50OmRlbGV0ZSJ9LHsiYXV0aG9yaXR5IjoicGFyZW50OmNyZWF0ZSJ9LHsiYXV0aG9yaXR5IjoicGFyZW50OnJlYWQifSx7ImF1dGhvcml0eSI6InBhcmVudDp1cGRhdGUifSx7ImF1dGhvcml0eSI6InBhcmVudDpkZWxldGUifSx7ImF1dGhvcml0eSI6IlJPTEVfQURNSU4ifV0sImF1ZCI6WyJBRE1JTiJdfQ.I_VAQXtbmgC4a2dksse_rye9sJ2KCI4nKWt-G9h4sToxJ-qnOpiUQ8U7RttwaJTyecuCQlY9ZwYQDaoufc2k0w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/users?page=0&size=10&sort=firstName&order=desc",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "sort",
+							"value": "firstName"
+						},
+						{
+							"key": "order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"id": "de52269c-35a0-4a3c-87df-8166feefefd2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/users/10",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"id": "9e6f960d-564a-4ef1-87a5-06cf98bd19bf",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"example@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"role\": \"STUDENT\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/users",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"id": "17f9ed07-75c9-4e65-9325-92764c9a4b0a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"example@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"role\": \"STUDENT\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/users/10",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"id": "06868dc4-ff4c-4c1d-a198-8ea13d97a21f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/users/10",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Profile Image",
+			"id": "e8d090ec-9e5e-464c-a627-193e1303c441",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcmFuY2lzY28uZnJlaXRhcy5mZkBnbWFpbC5jb20iLCJleHAiOjE3MTQ5OTQ5ODQsImlhdCI6MTcxNDk5NDY4NCwiaXNzIjoiU2Nob29sLU1hbmFnZW1lbnQtU3lzdGVtLVNwcmluZyIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJhZG1pbjpjcmVhdGUifSx7ImF1dGhvcml0eSI6ImFkbWluOnJlYWQifSx7ImF1dGhvcml0eSI6ImFkbWluOnVwZGF0ZSJ9LHsiYXV0aG9yaXR5IjoiYWRtaW46ZGVsZXRlIn0seyJhdXRob3JpdHkiOiJ0ZWFjaGVyOmNyZWF0ZSJ9LHsiYXV0aG9yaXR5IjoidGVhY2hlcjpyZWFkIn0seyJhdXRob3JpdHkiOiJ0ZWFjaGVyOnVwZGF0ZSJ9LHsiYXV0aG9yaXR5IjoidGVhY2hlcjpkZWxldGUifSx7ImF1dGhvcml0eSI6InN0dWRlbnQ6Y3JlYXRlIn0seyJhdXRob3JpdHkiOiJzdHVkZW50OnJlYWQifSx7ImF1dGhvcml0eSI6InN0dWRlbnQ6dXBkYXRlIn0seyJhdXRob3JpdHkiOiJzdHVkZW50OmRlbGV0ZSJ9LHsiYXV0aG9yaXR5IjoicGFyZW50OmNyZWF0ZSJ9LHsiYXV0aG9yaXR5IjoicGFyZW50OnJlYWQifSx7ImF1dGhvcml0eSI6InBhcmVudDp1cGRhdGUifSx7ImF1dGhvcml0eSI6InBhcmVudDpkZWxldGUifSx7ImF1dGhvcml0eSI6IlJPTEVfQURNSU4ifV0sImF1ZCI6WyJBRE1JTiJdfQ.bChFO8wOC-iNvGkQpHEd5JtTCBIjcg6K_UgonqSCxoT2v8X2glSrCZvaHkSmoLRW12bdSDd7bDHpq0oMMZNg4w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+							"filesNotInWorkingDirectory": [
+								"/C:/Users/franc/OneDrive/Desktop/example.png"
+							],
+							"src": "postman-cloud:///1ef0a31c-6dca-4940-9b27-08ea889a7916"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/users/profile-image",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"profile-image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Profile Image",
+			"id": "0a9b5e8b-d285-43fc-8d96-a7597ef7da58",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmcmFuY2lzY28uZnJlaXRhcy5mZkBnbWFpbC5jb20iLCJleHAiOjE3MTQ5OTQ5ODQsImlhdCI6MTcxNDk5NDY4NCwiaXNzIjoiU2Nob29sLU1hbmFnZW1lbnQtU3lzdGVtLVNwcmluZyIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJhZG1pbjpjcmVhdGUifSx7ImF1dGhvcml0eSI6ImFkbWluOnJlYWQifSx7ImF1dGhvcml0eSI6ImFkbWluOnVwZGF0ZSJ9LHsiYXV0aG9yaXR5IjoiYWRtaW46ZGVsZXRlIn0seyJhdXRob3JpdHkiOiJ0ZWFjaGVyOmNyZWF0ZSJ9LHsiYXV0aG9yaXR5IjoidGVhY2hlcjpyZWFkIn0seyJhdXRob3JpdHkiOiJ0ZWFjaGVyOnVwZGF0ZSJ9LHsiYXV0aG9yaXR5IjoidGVhY2hlcjpkZWxldGUifSx7ImF1dGhvcml0eSI6InN0dWRlbnQ6Y3JlYXRlIn0seyJhdXRob3JpdHkiOiJzdHVkZW50OnJlYWQifSx7ImF1dGhvcml0eSI6InN0dWRlbnQ6dXBkYXRlIn0seyJhdXRob3JpdHkiOiJzdHVkZW50OmRlbGV0ZSJ9LHsiYXV0aG9yaXR5IjoicGFyZW50OmNyZWF0ZSJ9LHsiYXV0aG9yaXR5IjoicGFyZW50OnJlYWQifSx7ImF1dGhvcml0eSI6InBhcmVudDp1cGRhdGUifSx7ImF1dGhvcml0eSI6InBhcmVudDpkZWxldGUifSx7ImF1dGhvcml0eSI6IlJPTEVfQURNSU4ifV0sImF1ZCI6WyJBRE1JTiJdfQ.bChFO8wOC-iNvGkQpHEd5JtTCBIjcg6K_UgonqSCxoT2v8X2glSrCZvaHkSmoLRW12bdSDd7bDHpq0oMMZNg4w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/users/profile-image",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"profile-image"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmFuY2lzY28uZnJlaXRhcy5mZkBnbWFpbC5jb20iLCJleHAiOjE3MTI1NzU1MDIsImlhdCI6MTcxMjU3NTQ0MiwiaXNzIjoiU2Nob29sLU1hbmFnZW1lbnQtU3lzdGVtLVNwcmluZyIsImF1ZCI6WyJBRE1JTiJdfQ.zJjhVUhgahhQT7vHy9EJVOEYXhL3uup-KP_SdPEof0n0G8y4IxStvfIEHfLhOI0I",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "34b37994-d2ed-4156-be7b-aed3109bb287",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "27635c0f-63b7-4df1-90ad-b0d4ffdd276e",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
 }

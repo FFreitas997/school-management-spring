@@ -9,7 +9,10 @@ id = 558925cd-6a7e-4a35-a779-8bd2aed8470b
 
 [config.relations.collections]
 rootDirectory = postman/collections
+files[] = {"id":"7485179-1812f199-f290-4561-a2ae-013736fbdd8c","path":"Actuator.json","metaData":{}}
 files[] = {"id":"7485179-559c3235-770a-493f-a96e-aec64ebe7bb2","path":"Authentication & Registration.json","metaData":{}}
+files[] = {"id":"7485179-f23a0e78-a372-4ffc-ab4b-84a180ca072d","path":"OpenAPI.json","metaData":{}}
+files[] = {"id":"7485179-14b04546-8689-4fc9-96b9-8aa909f0581b","path":"Teacher.json","metaData":{}}
 files[] = {"id":"7485179-738c7af2-cb8f-441a-abf9-88064d8238e5","path":"User Management.json","metaData":{}}
 
 [config.relations.collections.metaData]

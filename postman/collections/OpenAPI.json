@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "f23a0e78-a372-4ffc-ab4b-84a180ca072d",
+		"name": "OpenAPI",
+		"description": "A set of endpoints to generate API documentation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "7485179-f23a0e78-a372-4ffc-ab4b-84a180ca072d"
+	},
+	"item": [
+		{
+			"name": "Swagger UI",
+			"id": "a1007988-ec5b-48b6-9130-55b7d1373241",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/swagger-ui/index.html",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger-ui",
+						"index.html"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Swagger API Docs",
+			"id": "8a1c1161-a4ac-4c5c-8666-d82f65768193",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v3/api-docs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v3",
+						"api-docs"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

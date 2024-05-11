@@ -2,8 +2,369 @@
 	"info": {
 		"_postman_id": "559c3235-770a-493f-a96e-aec64ebe7bb2",
 		"name": "Authentication & Registration",
+		"description": "This collection contains a set of endpoints to handle Authentication & Registration in the system",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_uid": "7485179-559c3235-770a-493f-a96e-aec64ebe7bb2"
 	},
-	"item": []
+	"item": [
+		{
+			"name": "Registration",
+			"id": "a43dea85-c35a-4501-aa80-a44d0668872b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Manuel\",\r\n    \"lastName\": \"Fernando\",\r\n    \"email\": \"manuelrosa@mail.com\",\r\n    \"password\": \"29101997\",\r\n    \"role\": \"STUDENT\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/auth/register",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "b6e2103c-0686-4e02-badb-1f04baccaaf1",
+					"name": "Registration",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Francisco\",\r\n    \"lastName\": \"Freitas\",\r\n    \"email\": \"francisco.freitas.ff@gmail.com\",\r\n    \"password\": \"29101997\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL_DEV_V1}}/api/v1/auth/register",
+							"host": [
+								"{{BASE_URL_DEV_V1}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 08 Apr 2024 10:05:56 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmFuY2lzY28uZnJlaXRhcy5mZkBnbWFpbC5jb20iLCJleHAiOjE3MTI1NzQzNTYsImlhdCI6MTcxMjU3MDc1NiwiaXNzIjoiU2Nob29sLU1hbmFnZW1lbnQtU3lzdGVtLVNwcmluZyIsImF1ZCI6WyJBRE1JTiJdfQ._gR82g1Qu1RLyjEVoqI-bBIV03Lhjf6YnfO7f8RT1QJISuU3eBFm_Am_qvlGMeTa\",\n    \"refresh_token\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmFuY2lzY28uZnJlaXRhcy5mZkBnbWFpbC5jb20iLCJleHAiOjE3MTI2NTcxNTYsImlhdCI6MTcxMjU3MDc1NiwiaXNzIjoiU2Nob29sLU1hbmFnZW1lbnQtU3lzdGVtLVNwcmluZyJ9.R5W60c4iqfHjX7Yzap9PtV3-nOSsMf9zQ48Hu3BKEgXrPQRTgKfpxjyIRlYbKtq5\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"id": "f632d007-54cd-4026-8917-9e4813d33f01",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"francisco.freitas.ff@gmail.com\",\r\n    \"password\": \"password123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/auth/authenticate",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"id": "091f2cfc-9c0d-453b-9e19-42bebb30fa40",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmFuY2lzY28uZnJlaXRhcy5mZkBnbWFpbC5jb20iLCJleHAiOjE3MTMxNzc0ODgsImlhdCI6MTcxMzE3NzE4OCwiaXNzIjoiU2Nob29sLU1hbmFnZW1lbnQtU3lzdGVtLVNwcmluZyIsImF1ZCI6WyJBRE1JTiJdfQ.N0Eer93TL_EkJLA3-z7x5JRAQuN3iAHIAeRcgPHfeuT820BQPAuljmj4qSV9EC-c",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/auth/refresh-token",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"refresh-token"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "c2405103-89a3-419e-b543-6e2232b29a09",
+					"name": "Refresh Token",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL_DEV_V1}}/api/v1/auth/refresh-token",
+							"host": [
+								"{{BASE_URL_DEV_V1}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "536"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 08 Apr 2024 11:22:01 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\"access_token\":\"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmFuY2lzY28uZnJlaXRhcy5mZkBnbWFpbC5jb20iLCJleHAiOjE3MTI1NzUzODEsImlhdCI6MTcxMjU3NTMyMSwiaXNzIjoiU2Nob29sLU1hbmFnZW1lbnQtU3lzdGVtLVNwcmluZyIsImF1ZCI6WyJBRE1JTiJdfQ.Xi87pyGcYl4AQRXLKLRdDh1f3wbxT1-skvgOo51D1KwVBMtL7wsE_N0FyG_fu1bB\",\"refresh_token\":\"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmFuY2lzY28uZnJlaXRhcy5mZkBnbWFpbC5jb20iLCJleHAiOjE3MTI2NjE1NDUsImlhdCI6MTcxMjU3NTE0NSwiaXNzIjoiU2Nob29sLU1hbmFnZW1lbnQtU3lzdGVtLVNwcmluZyJ9.dZqUwQjOx6rXKlPuMI-GdbtNLhMfBE16krmXrh0v8iw3bMWBbYCqbROF3zztzf7c\"}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"id": "3cadaa96-6bc6-43a1-a894-773a0e6f0c58",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/auth/logout",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activate Account",
+			"id": "ac531c2b-3e5e-4cbc-9ac5-f9e4b59365cc",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/auth/activate-account?code=396005",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"activate-account"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "396005",
+							"description": "6 digit number"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Activation Code",
+			"id": "a682fe1c-c318-4894-8ebc-22c67c91cda6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL_DEV_V1}}/api/v1/auth/generate-activation-code?email=manuel@gmail.com",
+					"host": [
+						"{{BASE_URL_DEV_V1}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"generate-activation-code"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "manuel@gmail.com",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
 }
