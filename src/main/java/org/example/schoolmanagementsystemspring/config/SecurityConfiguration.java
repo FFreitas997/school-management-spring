@@ -42,6 +42,7 @@ public class SecurityConfiguration {
             "/css/**",
             "/images/**",
             "/api/v1/auth/**",
+            "/api/v1/school/all",
             "/api/v1/admin/management-server",
             "/v2/api-docs",
             "/v3/api-docs",

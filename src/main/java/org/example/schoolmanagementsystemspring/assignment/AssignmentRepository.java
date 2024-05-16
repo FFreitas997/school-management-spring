@@ -17,7 +17,7 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Assignme
             where a.id.courseCode = ?1 and a.id.deliverAssignment = ?2 and a.enabled = true""")
     boolean existsById_CourseCodeAndId_DeliverAssignmentAndEnabledTrue(String courseCode, LocalDateTime deliverAssignment);
 
-    @Query("select a from Assignment a where a.id.courseCode = ?1 and a.id.deliverAssignment = ?2")
+    @Query("select a from Assignment a where a.id.courseCode = ?1 and a.id.deliverAssignment = ?2 and a.enabled = true")
     List<Assignment> findById_CourseCodeAndId_DeliverAssignment(@NonNull String courseCode, @NonNull LocalDateTime deliverAssignment);
 
     @Query("select a from Assignment a where a.id.courseCode = ?1 and a.id.deliverAssignment = ?2 and a.enabled = true")

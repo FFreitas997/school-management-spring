@@ -3,7 +3,7 @@ package org.example.schoolmanagementsystemspring.teacher.service;
 import org.example.schoolmanagementsystemspring.authentication.exception.UserAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.school.exception.SchoolNotFoundException;
 import org.example.schoolmanagementsystemspring.teacher.dto.*;
-import org.example.schoolmanagementsystemspring.teacher.exception.StudentAlreadyHasResponsableException;
+import org.example.schoolmanagementsystemspring.teacher.exception.StudentAlreadyHasResponsibleException;
 import org.example.schoolmanagementsystemspring.teacher.exception.TeacherAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.teacher.exception.TeacherNotFoundException;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
@@ -26,7 +26,7 @@ public interface TeacherService {
 
     TeacherResponse getTeacherInformation(Authentication authentication) throws TeacherNotFoundException;
 
-    void associateStudentResponsibleFor(Authentication authentication, String studentEmail) throws TeacherNotFoundException, UserNotFoundException, StudentAlreadyHasResponsableException;
+    void associateStudentResponsibleFor(Authentication authentication, String studentEmail) throws TeacherNotFoundException, UserNotFoundException, StudentAlreadyHasResponsibleException;
 
     List<StudentResponse> getStudentResponsibleFor(Authentication authentication) throws TeacherNotFoundException;
 
@@ -46,7 +46,7 @@ public interface TeacherService {
 
     AssignmentResponse getAssignmentByCourseAndDeliveryAndStudent(String courseCode, LocalDateTime delivery, Integer studentID);
 
+    void submitFeedback(RequestFeedback request);
 
-    // give grade to student and feedback
-    // disable assigment
+    void disableAssignment(String courseCode, LocalDateTime delivery);
 }

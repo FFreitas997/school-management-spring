@@ -6,7 +6,7 @@ import org.example.schoolmanagementsystemspring.authentication.exception.Invalid
 import org.example.schoolmanagementsystemspring.authentication.exception.TokenNotFoundException;
 import org.example.schoolmanagementsystemspring.authentication.exception.UserAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.school.exception.SchoolNotFoundException;
-import org.example.schoolmanagementsystemspring.teacher.exception.StudentAlreadyHasResponsableException;
+import org.example.schoolmanagementsystemspring.teacher.exception.StudentAlreadyHasResponsibleException;
 import org.example.schoolmanagementsystemspring.teacher.exception.TeacherAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.teacher.exception.TeacherNotFoundException;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
@@ -222,8 +222,8 @@ public class GlobalHandlerExceptions {
                 );
     }
 
-    @ExceptionHandler(StudentAlreadyHasResponsableException.class)
-    public ResponseEntity<ExceptionResponse> handleException(StudentAlreadyHasResponsableException ex) {
+    @ExceptionHandler(StudentAlreadyHasResponsibleException.class)
+    public ResponseEntity<ExceptionResponse> handleException(StudentAlreadyHasResponsibleException ex) {
         return ResponseEntity
                 .status(STUDENT_ALREADY_HAS_RESPONSIBLE.getHttpStatus())
                 .body(
@@ -243,7 +243,19 @@ public class GlobalHandlerExceptions {
 
 
 
-
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ExceptionResponse> handleException(IllegalArgumentException ex) {
+        log.error("An {} error occurred: {}", ex.getClass().getSimpleName(), ex.getMessage());
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(
+                        ExceptionResponse
+                                .builder()
+                                .description("An error occurred, please check the request")
+                                .error(ex.getMessage())
+                                .build()
+                );
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleException(Exception ex) {

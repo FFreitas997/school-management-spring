@@ -2,6 +2,7 @@ package org.example.schoolmanagementsystemspring.school.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
+import org.example.schoolmanagementsystemspring.school.entity.SchoolType;
 
 /**
  * @author FFreitas
@@ -13,7 +14,7 @@ import lombok.Builder;
 public record SchoolResponse(
         Integer id,
         String name,
-        String type,
+        SchoolType type,
         String email,
         String phoneNumber,
         String facebookURL,
