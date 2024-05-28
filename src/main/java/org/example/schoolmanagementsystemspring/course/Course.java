@@ -3,8 +3,8 @@ package org.example.schoolmanagementsystemspring.course;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.schoolmanagementsystemspring.school.entity.School;
-import org.example.schoolmanagementsystemspring.student.GradeLevel;
-import org.example.schoolmanagementsystemspring.student.Student;
+import org.example.schoolmanagementsystemspring.student.entity.GradeLevel;
+import org.example.schoolmanagementsystemspring.student.entity.Student;
 import org.example.schoolmanagementsystemspring.teacher.entity.Teacher;
 import org.example.schoolmanagementsystemspring.textbook.TextBook;
 import org.springframework.data.annotation.CreatedBy;
@@ -31,6 +31,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class Course {
 
+    //TODO nota do curso (grade(0 -> 20) x assigment weight) + ....
     @Id
     @GeneratedValue
     private Integer id;

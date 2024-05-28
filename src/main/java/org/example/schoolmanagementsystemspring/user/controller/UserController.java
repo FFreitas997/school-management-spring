@@ -92,7 +92,7 @@ public class UserController {
         return service.getUserById(userID);
     }
 
-    /**
+  /*  *//**
      * The createUser method handles POST requests to create a user.
      * It uses the UserService to create the user.
      * It returns a UserDto object.
@@ -100,7 +100,7 @@ public class UserController {
      *
      * @param request the UserRequestDto object that contains the user data.
      * @return a UserDto object.
-     */
+     *//*
     @Operation(summary = "Create user", description = "Create user in the system.")
     @PostMapping
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('admin:create')")
@@ -108,9 +108,9 @@ public class UserController {
     public UserDto createUser(@Valid @RequestBody UserRequestDto request) {
         log.info("Creating user: {}", request);
         return service.createUser(request);
-    }
+    }*/
 
-    /**
+/*    *//**
      * The updateUser method handles PUT requests to update a user.
      * It uses the UserService to update the user.
      * It returns a UserDto object.
@@ -120,7 +120,7 @@ public class UserController {
      * @param request the UserRequestDto object that contains the new user data.
      * @return a UserDto object.
      * @throws UserNotFoundException if the user is not found.
-     */
+     *//*
     @Operation(summary = "Update user", description = "Update user in the system.")
     @PutMapping("/{userID}")
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('admin:update')")
@@ -128,7 +128,7 @@ public class UserController {
     public UserDto updateUser(@PathVariable Integer userID, @Valid @RequestBody UserRequestDto request) throws UserNotFoundException {
         log.info("Updating user with ID {}", userID);
         return service.updateUser(userID, request);
-    }
+    }*/
 
     /**
      * The deleteUser method handles DELETE requests to delete a user.
@@ -141,7 +141,7 @@ public class UserController {
     @DeleteMapping("/{userID}")
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('admin:delete')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Integer userID) {
+    public void deleteUser(@PathVariable Integer userID) throws UserNotFoundException {
         log.info("Deleting user with ID {}", userID);
         service.deleteUser(userID);
     }

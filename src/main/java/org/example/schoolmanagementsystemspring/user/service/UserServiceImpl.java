@@ -2,6 +2,7 @@ package org.example.schoolmanagementsystemspring.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.schoolmanagementsystemspring.storage.StorageDirectory;
 import org.example.schoolmanagementsystemspring.storage.StorageService;
 import org.example.schoolmanagementsystemspring.user.dto.UserRequestDto;
 import org.example.schoolmanagementsystemspring.user.dto.UserDto;
@@ -144,8 +145,12 @@ public class UserServiceImpl implements UserService {
      * @param userID the ID of the user.
      */
     @Override
-    public void deleteUser(Integer userID) {
-        repository.deleteById(userID);
+    public void deleteUser(Integer userID) throws UserNotFoundException {
+        User response = repository
+                .findById(userID)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userID));
+        response.setEnabled(false);
+        repository.save(response);
     }
 
     /**
@@ -180,8 +185,7 @@ public class UserServiceImpl implements UserService {
         user.setProfileImage(fileName);
         repository.save(user);
 
-
-        storageService.storeProfileImage(fileName, file.getBytes()).handle(this::handleStoreImage);
+        storageService.store(fileName, file.getBytes(), StorageDirectory.PROFILE_IMAGE).handle(this::handleStoreImage);
     }
 
     /**
@@ -200,7 +204,7 @@ public class UserServiceImpl implements UserService {
         User user = repository.findByEmailValid(auth.getName())
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + auth.getName()));
 
-        var resource = storageService.loadProfileImageResource(user.getProfileImage());
+        var resource = storageService.loadResource(user.getProfileImage(), StorageDirectory.PROFILE_IMAGE);
 
         if (resource == null || !resource.exists() || !resource.isReadable()) {
             log.error("Could not read file: {}", user.getProfileImage());

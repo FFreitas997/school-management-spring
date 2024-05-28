@@ -2,7 +2,7 @@ package org.example.schoolmanagementsystemspring.teacher.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
-import org.example.schoolmanagementsystemspring.student.GradeLevel;
+import org.example.schoolmanagementsystemspring.student.entity.GradeLevel;
 
 import java.time.LocalDateTime;
 

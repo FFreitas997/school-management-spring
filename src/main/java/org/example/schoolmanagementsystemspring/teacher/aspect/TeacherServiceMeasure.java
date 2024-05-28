@@ -37,7 +37,7 @@ public class TeacherServiceMeasure {
     public Object aroundMeasureTimeTeacherService(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         // Log the start of the method execution
         log.info("Teacher Service has just started: {}", proceedingJoinPoint.getSignature().toShortString());
-
+/*
         // Get the authentication object from the security context
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -53,7 +53,7 @@ public class TeacherServiceMeasure {
         if (!isTeacher) {
             log.error("Method execution stopped: user is not a teacher");
             throw new SecurityException("User is not a teacher");
-        }
+        }*/
 
         // Start measuring the execution time
         log.info("Start measuring the time ...");

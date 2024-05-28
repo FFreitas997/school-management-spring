@@ -11,8 +11,10 @@ import org.example.schoolmanagementsystemspring.course.CourseRepository;
 import org.example.schoolmanagementsystemspring.school.entity.School;
 import org.example.schoolmanagementsystemspring.school.exception.SchoolNotFoundException;
 import org.example.schoolmanagementsystemspring.school.repository.SchoolRepository;
-import org.example.schoolmanagementsystemspring.student.Student;
-import org.example.schoolmanagementsystemspring.student.StudentRepository;
+import org.example.schoolmanagementsystemspring.storage.StorageDirectory;
+import org.example.schoolmanagementsystemspring.storage.StorageService;
+import org.example.schoolmanagementsystemspring.student.entity.Student;
+import org.example.schoolmanagementsystemspring.student.repository.StudentRepository;
 import org.example.schoolmanagementsystemspring.teacher.dto.*;
 import org.example.schoolmanagementsystemspring.teacher.entity.Teacher;
 import org.example.schoolmanagementsystemspring.teacher.exception.StudentAlreadyHasResponsibleException;
@@ -20,17 +22,24 @@ import org.example.schoolmanagementsystemspring.teacher.exception.TeacherAlready
 import org.example.schoolmanagementsystemspring.teacher.exception.TeacherNotFoundException;
 import org.example.schoolmanagementsystemspring.teacher.mappers.*;
 import org.example.schoolmanagementsystemspring.teacher.repository.TeacherRepository;
+import org.example.schoolmanagementsystemspring.textbook.TextBook;
+import org.example.schoolmanagementsystemspring.textbook.TextBookRepository;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -57,12 +66,14 @@ public class TeacherServiceImpl implements TeacherService {
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
     private final AssignmentRepository assignmentRepository;
+    private final TextBookRepository textBookRepository;
     private final TeacherMapper mapper;
     private final TeacherResponseMapper responseMapper;
     private final StudentResponseMapper studentResponseMapper;
     private final CourseResponseMapper courseResponseMapper;
     private final AssignmentMapper assignmentMapper;
     private final AssignmentResponseMapper assignmentResponseMapper;
+    private final StorageService storageService;
 
 
     /**
@@ -384,7 +395,6 @@ public class TeacherServiceImpl implements TeacherService {
                 .studentID(param.getId().getStudentID())
                 .delivery(param.getId().getDeliverAssignment())
                 .title(param.getTitle())
-                .points(param.getPoints())
                 .submissionType(param.getSubmissionType())
                 .assignmentType(param.getAssignmentType())
                 .build();
@@ -466,5 +476,116 @@ public class TeacherServiceImpl implements TeacherService {
 
         assignmentRepository.saveAll(results);
 
+    }
+
+    @Override
+    public void createTextBook(RequestTextBook request) {
+        log.info("Creating textbook: {}", request.title());
+
+        var checkTextBook = textBookRepository.existsByIsbn(request.isbn());
+
+        if (checkTextBook)
+            throw new IllegalArgumentException("Textbook already exists");
+
+        var textBook = TextBook.builder()
+                .title(request.title())
+                .description(request.description())
+                .author(request.author())
+                .edition(request.edition())
+                .isbn(request.isbn())
+                .cost(request.cost())
+                .link(request.link())
+                .build();
+
+        textBookRepository.save(textBook);
+    }
+
+    @Override
+    public Resource downloadTextBookCover(Integer textBookID) {
+        log.info("Downloading textbook cover: {}", textBookID);
+
+        var textBook = textBookRepository
+                .findById(textBookID)
+                .orElseThrow(() -> new IllegalArgumentException("Textbook not found"));
+
+        var resource = storageService.loadResource(textBook.getCoverFileName(), StorageDirectory.TEXTBOOK_COVER);
+
+        if (resource == null || !resource.exists() || !resource.isReadable()) {
+            log.error("Could not read file: {}", textBook.getCoverFileName());
+            throw new IllegalArgumentException("Could not read file: " + textBook.getCoverFileName());
+        }
+
+        return resource;
+    }
+
+    @Override
+    public void uploadTextBookCover(Integer textBookID, MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            log.error("Failed to store empty or null file");
+            throw new IOException("Failed to store empty file");
+        }
+
+        if (!getFileExtension(Objects.requireNonNull(file.getOriginalFilename())).equals("png")){
+            log.error("Failed to store file with invalid extension");
+            throw new IOException("Failed to store file with invalid extension. Only PNG files are allowed.");
+        }
+
+        var textBook = textBookRepository
+                .findById(textBookID)
+                .orElseThrow(() -> new IllegalArgumentException("Textbook not found"));
+
+        String fileName = textBook.getIsbn() + "_" +
+                System.currentTimeMillis() + "." +
+                getFileExtension(Objects.requireNonNull(file.getOriginalFilename()));
+
+        textBook.setCoverFileName(fileName);
+
+        textBookRepository.save(textBook);
+
+        storageService.store(fileName, file.getBytes(), StorageDirectory.TEXTBOOK_COVER);
+    }
+
+    @Override
+    public void associateTextBookToCourse(String courseCode, String textBookISBN) {
+        log.info("Associating textbook to course: {}", courseCode);
+
+        var course = courseRepository
+                .findByCourseCode(courseCode)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+
+        var textBook = textBookRepository.findByIsbn(textBookISBN)
+                .orElseThrow(() -> new IllegalArgumentException("Textbook not found"));
+
+        course.getTextBooks().add(textBook);
+
+        courseRepository.save(course);
+    }
+
+    @Override
+    public List<TextBookResponse> getTextBooksByCourse(String courseCode) {
+        log.info("Getting textbooks by course: {}", courseCode);
+
+        var course = courseRepository
+                .findByCourseCode(courseCode)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
+
+        return course.getTextBooks()
+                .stream()
+                .map(param -> TextBookResponse.builder()
+                        .id(param.getId())
+                        .title(param.getTitle())
+                        .description(param.getDescription())
+                        .author(param.getAuthor())
+                        .edition(param.getEdition())
+                        .isbn(param.getIsbn())
+                        .cost(param.getCost())
+                        .link(param.getLink())
+                        .build()
+                )
+                .toList();
+    }
+
+    private String getFileExtension(@NonNull String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
     }
 }

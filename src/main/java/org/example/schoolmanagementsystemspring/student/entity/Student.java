@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.student;
+package org.example.schoolmanagementsystemspring.student.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -51,8 +51,7 @@ public class Student extends User {
     @JoinColumn(name = "teacher_responsible_id")
     private Teacher teacherResponsible;
 
-    @OneToOne
-    @JoinColumn(name = "parent_responsible_id")
+    @OneToOne(mappedBy = "studentResponsible")
     private Parent parentResponsible;
 
     @ManyToOne

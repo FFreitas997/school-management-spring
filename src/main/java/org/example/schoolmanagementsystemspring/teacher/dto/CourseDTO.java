@@ -1,6 +1,6 @@
 package org.example.schoolmanagementsystemspring.teacher.dto;
 
-import org.example.schoolmanagementsystemspring.student.GradeLevel;
+import org.example.schoolmanagementsystemspring.student.entity.GradeLevel;
 
 /**
  * @author FFreitas

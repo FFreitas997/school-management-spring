@@ -24,7 +24,6 @@ public class AssignmentResponseMapper implements Function<Assignment, Assignment
                 .delivery(result.getId().getDeliverAssignment())
                 .title(result.getTitle())
                 .description(result.getDescription())
-                .points(result.getPoints())
                 .submissionType(result.getSubmissionType())
                 .assignmentType(result.getAssignmentType())
                 .grade(result.getGrade())

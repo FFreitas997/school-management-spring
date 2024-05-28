@@ -22,4 +22,10 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Assignme
 
     @Query("select a from Assignment a where a.id.courseCode = ?1 and a.id.deliverAssignment = ?2 and a.enabled = true")
     Page<Assignment> findById_CourseCodeAndId_DeliverAssignmentAndEnabledTrue(String courseCode, LocalDateTime deliverAssignment, Pageable pageable);
+
+    @Query("select a from Assignment a where a.id.studentID = ?1")
+    Page<Assignment> findById_StudentID(@NonNull Integer studentID, Pageable pageable);
+
+    @Query("select a from Assignment a where a.id.studentID = ?1 and a.id.deliverAssignment > ?2")
+    List<Assignment> findById_StudentIDAndId_DeliverAssignmentAfter(@NonNull Integer studentID, @NonNull LocalDateTime deliverAssignment);
 }

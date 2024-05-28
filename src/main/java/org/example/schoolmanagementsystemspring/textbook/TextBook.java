@@ -44,7 +44,7 @@ public class TextBook {
     @Column(name = "edition")
     private String edition;
 
-    @Column(name = "isbn")
+    @Column(name = "isbn", unique = true, nullable = false)
     private String isbn;
 
     @Column(name = "cost")

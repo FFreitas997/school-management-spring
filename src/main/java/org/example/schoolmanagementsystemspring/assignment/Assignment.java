@@ -30,7 +30,7 @@ public class Assignment {
     private AssignmentID id;
 
     @Column(name = "grade")
-    private Integer grade;
+    private Double grade;
 
     @Column(name = "feedback", length = 300)
     private String feedback;
@@ -40,9 +40,6 @@ public class Assignment {
 
     @Column(name = "description", length = 300)
     private String description;
-
-    @Column(name = "points")
-    private Integer points;
 
     @Column(name = "submission_type", nullable = false)
     @Enumerated(EnumType.STRING)

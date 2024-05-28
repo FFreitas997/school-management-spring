@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.example.schoolmanagementsystemspring.course.Course;
 import org.example.schoolmanagementsystemspring.school.entity.School;
-import org.example.schoolmanagementsystemspring.student.Student;
+import org.example.schoolmanagementsystemspring.student.entity.Student;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

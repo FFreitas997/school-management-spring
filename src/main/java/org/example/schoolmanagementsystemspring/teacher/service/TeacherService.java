@@ -7,9 +7,12 @@ import org.example.schoolmanagementsystemspring.teacher.exception.StudentAlready
 import org.example.schoolmanagementsystemspring.teacher.exception.TeacherAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.teacher.exception.TeacherNotFoundException;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,8 +22,6 @@ import java.util.List;
  * <a href="https://github.com/FFreitas997/">Github</a>
  */
 public interface TeacherService {
-
-    // TODO method to create textbook, associate to course, list per course, download and upload cover
 
     void register(RequestTeacher request) throws UserAlreadyExistsException, UserNotFoundException, SchoolNotFoundException, TeacherAlreadyExistsException;
 
@@ -49,4 +50,14 @@ public interface TeacherService {
     void submitFeedback(RequestFeedback request);
 
     void disableAssignment(String courseCode, LocalDateTime delivery);
+
+    void createTextBook(RequestTextBook request);
+
+    Resource downloadTextBookCover(Integer textBookID) throws UserNotFoundException;
+
+    void uploadTextBookCover(Integer textBookID, MultipartFile file) throws IOException;
+
+    void associateTextBookToCourse(String courseCode, String textBookISBN);
+
+    List<TextBookResponse> getTextBooksByCourse(String courseCode);
 }

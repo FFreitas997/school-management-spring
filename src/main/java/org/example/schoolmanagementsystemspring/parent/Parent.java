@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.example.schoolmanagementsystemspring.student.Student;
+import org.example.schoolmanagementsystemspring.student.entity.Student;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -33,9 +33,6 @@ public class Parent extends User {
     @Column(name = "phone_number", nullable = false, length = 9)
     private String phoneNumber;
 
-    @Column(name = "email", nullable = false)
-    private String email;
-
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ParentType type;
@@ -45,7 +42,7 @@ public class Parent extends User {
 
     @OneToOne
     @JoinColumn(name = "student_id")
-    private Student student;
+    private Student studentResponsible;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate

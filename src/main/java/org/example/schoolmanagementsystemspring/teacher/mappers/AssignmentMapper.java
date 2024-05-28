@@ -29,7 +29,6 @@ public class AssignmentMapper implements BiFunction<RequestAssignment, Integer, 
                 .id(id)
                 .title(requestAssignment.title())
                 .description(requestAssignment.description())
-                .points(requestAssignment.points())
                 .submissionType(requestAssignment.submissionType())
                 .assignmentType(requestAssignment.assignmentType())
                 .enabled(true)

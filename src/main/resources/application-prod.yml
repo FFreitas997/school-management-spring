@@ -89,3 +89,4 @@ email:
 
 storage:
   profile-directory: "/application/storage/profiles"
+  book-covers-directory: "/application/storage/book-covers"

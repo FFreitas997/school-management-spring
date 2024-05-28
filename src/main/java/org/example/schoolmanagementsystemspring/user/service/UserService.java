@@ -79,7 +79,7 @@ public interface UserService {
      *
      * @param userID the ID of the user.
      */
-    void deleteUser(Integer userID);
+    void deleteUser(Integer userID) throws UserNotFoundException;
 
     /**
      * The uploadUserImage method uploads a user image.

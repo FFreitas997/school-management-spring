@@ -1,5 +1,6 @@
-package org.example.schoolmanagementsystemspring.student;
+package org.example.schoolmanagementsystemspring.student.repository;
 
+import org.example.schoolmanagementsystemspring.student.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +29,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     @Query("select s from Student s inner join s.courses courses where courses.courseCode = ?1")
     List<Student> findStudentsByCourseCode(@NonNull String courseCode);
+
+    @Query("select (count(s) > 0) from Student s where s.email = ?1")
+    boolean existsByEmail(@NonNull String email);
 }

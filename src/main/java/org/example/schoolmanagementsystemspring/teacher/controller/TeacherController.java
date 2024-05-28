@@ -13,12 +13,16 @@ import org.example.schoolmanagementsystemspring.teacher.exception.StudentAlready
 import org.example.schoolmanagementsystemspring.teacher.exception.TeacherAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.teacher.exception.TeacherNotFoundException;
 import org.example.schoolmanagementsystemspring.teacher.service.TeacherService;
+import org.example.schoolmanagementsystemspring.teacher.service.TextBookResponse;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -311,5 +315,94 @@ public class TeacherController {
     public void disableAssignment(@RequestParam(name = "courseCode") String courseCode, @RequestParam(name = "delivery") String delivery) {
         log.info("Disabling assignment: {} - {}", courseCode, delivery);
         service.disableAssignment(courseCode, LocalDateTime.parse(delivery));
+    }
+
+    /**
+     * This method allows a teacher to create a textbook.
+     * It takes a RequestTextBook object as input which contains the details of the textbook to be created.
+     * The textbook details are then passed to the service layer for processing.
+     *
+     * @param request a RequestTextBook object containing the details of the textbook to be created
+     */
+    @PreAuthorize("hasRole('TEACHER') and hasAuthority('teacher:create')")
+    @SecurityRequirement(name = "JSON Web Token (JWT)")
+    @Operation(summary = "Textbook Creation", description = "Create a textbook")
+    @PostMapping("/textbook")
+    @ResponseStatus(ACCEPTED)
+    public void createTextBook(@RequestBody @Valid RequestTextBook request) {
+        log.info("Creating textbook: {}", request.title());
+        service.createTextBook(request);
+    }
+
+    /**
+     * This method allows a teacher to download the cover of a textbook.
+     * It uses the textbook ID to find the textbook and then retrieves the cover of the textbook.
+     *
+     * @param textBookID the ID of the textbook
+     * @return the cover of the textbook
+     * @throws UserNotFoundException if the textbook is not found
+     */
+    @PreAuthorize("hasRole('TEACHER') and hasAuthority('teacher:read')")
+    @SecurityRequirement(name = "JSON Web Token (JWT)")
+    @Operation(summary = "Textbook Cover Download", description = "Download the cover of a textbook")
+    @GetMapping("/textbook/{textBookID}/cover")
+    @ResponseStatus(OK)
+    public Resource downloadTextBookCover(@PathVariable Integer textBookID) throws UserNotFoundException {
+        log.info("Downloading textbook cover: {}", textBookID);
+        return service.downloadTextBookCover(textBookID);
+    }
+
+    /**
+     * This method allows a teacher to upload the cover of a textbook.
+     * It uses the textbook ID to find the textbook and then uploads the cover of the textbook.
+     *
+     * @param textBookID the ID of the textbook
+     * @param file       the cover of the textbook
+     * @throws IOException if an I/O error occurs
+     */
+    @PreAuthorize("hasRole('TEACHER') and hasAuthority('teacher:update')")
+    @SecurityRequirement(name = "JSON Web Token (JWT)")
+    @Operation(summary = "Textbook Cover Upload", description = "Upload the cover of a textbook")
+    @PatchMapping("/textbook/{textBookID}/cover")
+    @ResponseStatus(ACCEPTED)
+    public void uploadTextBookCover(@PathVariable Integer textBookID, @RequestParam("file") MultipartFile file) throws IOException, IOException {
+        log.info("Uploading textbook cover: {}", textBookID);
+        service.uploadTextBookCover(textBookID, file);
+    }
+
+    /**
+     * This method allows a teacher to associate a textbook to a course.
+     * It uses the course code and the textbook ISBN to find the course and the textbook.
+     * Once the course and textbook are found, they are associated.
+     *
+     * @param courseCode   the code of the course
+     * @param textBookISBN the ISBN of the textbook
+     */
+    @PreAuthorize("hasRole('TEACHER') and hasAuthority('teacher:update')")
+    @SecurityRequirement(name = "JSON Web Token (JWT)")
+    @Operation(summary = "Course and Textbook Association", description = "Attach a textbook to a course")
+    @PatchMapping("/course/textbook")
+    @ResponseStatus(OK)
+    public void associateTextBookToCourse(@RequestParam(name = "courseCode") String courseCode, @RequestParam(name = "textBookISBN") String textBookISBN) {
+        log.info("Associating textbook to course: {}", courseCode);
+        service.associateTextBookToCourse(courseCode, textBookISBN);
+    }
+
+    /**
+     * This method retrieves all textbooks associated with a specific course.
+     * It uses the course code to find the course and then retrieves all textbooks associated with the course.
+     *
+     * @param courseCode the code of the course
+     * @return a paginated list of textbooks associated with the course
+     */
+
+    @PreAuthorize("hasRole('TEACHER') and hasAuthority('teacher:read')")
+    @SecurityRequirement(name = "JSON Web Token (JWT)")
+    @Operation(summary = "Textbook Course", description = "List of textbooks by course")
+    @GetMapping("/course/{courseCode}/textbook")
+    @ResponseStatus(OK)
+    public List<TextBookResponse> getTextBookInformation(@PathVariable String courseCode) {
+        log.info("Getting information about textbook: {}", courseCode);
+        return service.getTextBooksByCourse(courseCode);
     }
 }

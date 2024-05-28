@@ -31,9 +31,6 @@ public record RequestAssignment(
         @Length(max = 600, message = "Description must be less than 600 characters")
         String description,
 
-        @NotNull(message = "Points shouldn't be null")
-        Integer points,
-
         @NotNull(message = "Submission type shouldn't be null")
         SubmissionType submissionType,
 

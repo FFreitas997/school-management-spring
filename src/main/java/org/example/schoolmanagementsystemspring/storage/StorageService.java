@@ -14,9 +14,9 @@ import java.util.concurrent.CompletableFuture;
 public interface StorageService {
 
     @Async
-    CompletableFuture<Void> storeProfileImage(@NonNull String fileName, @NonNull byte[] content);
+    CompletableFuture<Void> store(@NonNull String fileName, @NonNull byte[] content, @NonNull StorageDirectory directory);
 
-    Resource loadProfileImageResource(String fileName);
+    Resource loadResource(String fileName, StorageDirectory directory);
 
-    void delete(String fileName);
+    void delete(String fileName, StorageDirectory directory);
 }

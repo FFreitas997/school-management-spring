@@ -1,6 +1,6 @@
 package org.example.schoolmanagementsystemspring.teacher.mappers;
 
-import org.example.schoolmanagementsystemspring.student.Student;
+import org.example.schoolmanagementsystemspring.student.entity.Student;
 import org.example.schoolmanagementsystemspring.teacher.dto.StudentResponse;
 import org.springframework.stereotype.Component;
 

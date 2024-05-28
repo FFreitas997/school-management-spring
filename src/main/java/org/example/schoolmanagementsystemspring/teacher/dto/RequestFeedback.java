@@ -1,6 +1,7 @@
 package org.example.schoolmanagementsystemspring.teacher.dto;
 
 import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
@@ -11,8 +12,8 @@ public record RequestFeedback(
 
         @NotNull(message = "Grade shouldn't be null")
         @PositiveOrZero(message = "Grade must be positive or zero")
-        @Max(value = 20, message = "Grade must be less than 20")
-        Integer grade,
+        @Size(min = 0, max = 20, message = "Grade must be between 0 and 20")
+        Double grade,
 
         @NotBlank(message = "Course code shouldn't be null or empty")
         String courseCode,

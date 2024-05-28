@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.student;
+package org.example.schoolmanagementsystemspring.student.entity;
 
 /**
  * @author FFreitas

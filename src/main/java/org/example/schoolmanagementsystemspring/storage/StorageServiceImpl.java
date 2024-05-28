@@ -2,7 +2,6 @@ package org.example.schoolmanagementsystemspring.storage;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.lang.NonNull;
@@ -33,11 +32,6 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class StorageServiceImpl implements StorageService {
 
-    @Value("${storage.profile-directory}")
-    private String profileDirectory;
-
-    private Path rootLocation;
-
     /**
      * The init method initializes the root location of the profile images.
      * It is called after the construction of the StorageServiceImpl object.
@@ -45,7 +39,6 @@ public class StorageServiceImpl implements StorageService {
     @PostConstruct
     public void init() {
         log.info("Storage Service initialized ...");
-        rootLocation = Paths.get(profileDirectory);
     }
 
     /**
@@ -61,10 +54,12 @@ public class StorageServiceImpl implements StorageService {
      */
     @Override
     @Async
-    public CompletableFuture<Void> storeProfileImage(@NonNull String fileName, @NonNull byte[] content) {
+    public CompletableFuture<Void> store(@NonNull String fileName, @NonNull byte[] content, @NonNull StorageDirectory directory) {
         try {
 
             log.info("Storing file: {}", fileName);
+
+            var rootLocation = Paths.get(directory.getDirectory());
 
             // Check if the content is empty
             if (content.length == 0) {
@@ -108,8 +103,9 @@ public class StorageServiceImpl implements StorageService {
      * @throws StorageException if an error occurs while loading the file.
      */
     @Override
-    public Resource loadProfileImageResource(String fileName) {
+    public Resource loadResource(String fileName, StorageDirectory directory) {
         try {
+            var rootLocation = Paths.get(directory.getDirectory());
             Path file = rootLocation.resolve(fileName)
                     .normalize().toAbsolutePath();
             Resource resource = new UrlResource(file.toUri());
@@ -132,7 +128,8 @@ public class StorageServiceImpl implements StorageService {
      * @param fileName the name of the file to be deleted.
      */
     @Override
-    public void delete(String fileName) {
+    public void delete(String fileName, StorageDirectory directory) {
+        var rootLocation = Paths.get(directory.getDirectory());
         FileSystemUtils.deleteRecursively(rootLocation.resolve(fileName).toFile());
     }
 }
