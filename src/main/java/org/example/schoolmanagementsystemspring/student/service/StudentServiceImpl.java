@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.schoolmanagementsystemspring.assignment.AssignmentRepository;
 import org.example.schoolmanagementsystemspring.authentication.service.AuthenticationService;
 import org.example.schoolmanagementsystemspring.course.CourseRepository;
-import org.example.schoolmanagementsystemspring.parent.ParentRepository;
+import org.example.schoolmanagementsystemspring.parent.repository.ParentRepository;
 import org.example.schoolmanagementsystemspring.school.entity.School;
 import org.example.schoolmanagementsystemspring.school.exception.SchoolNotFoundException;
 import org.example.schoolmanagementsystemspring.school.repository.SchoolRepository;

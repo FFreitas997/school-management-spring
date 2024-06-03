@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.example.schoolmanagementsystemspring.course.Course;
-import org.example.schoolmanagementsystemspring.parent.Parent;
+import org.example.schoolmanagementsystemspring.parent.entity.Parent;
 import org.example.schoolmanagementsystemspring.school.entity.School;
 import org.example.schoolmanagementsystemspring.teacher.entity.Teacher;
 import org.example.schoolmanagementsystemspring.user.entity.User;
