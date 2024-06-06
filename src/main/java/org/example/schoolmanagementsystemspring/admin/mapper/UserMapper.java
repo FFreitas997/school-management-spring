@@ -1,6 +1,6 @@
 package org.example.schoolmanagementsystemspring.admin.mapper;
 
-import org.example.schoolmanagementsystemspring.admin.dto.AdminRequestRegisterDTO;
+import org.example.schoolmanagementsystemspring.admin.dto.RequestUser;
 import org.example.schoolmanagementsystemspring.user.entity.Role;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import java.util.function.Function;
  * <a href="https://github.com/FFreitas997/">Github</a>
  */
 @Component
-public class UserMapper implements Function<AdminRequestRegisterDTO, User> {
+public class UserMapper implements Function<RequestUser, User> {
 
     /**
      * The apply method maps an AdminRequestRegisterDTO object to a User object.
@@ -31,13 +31,15 @@ public class UserMapper implements Function<AdminRequestRegisterDTO, User> {
      * @return a User object with the details from the AdminRequestRegisterDTO object and some default values.
      */
     @Override
-    public User apply(AdminRequestRegisterDTO dto) {
+    public User apply(RequestUser dto) {
         return User
                 .builder()
                 .firstName(dto.firstName())
                 .lastName(dto.lastName())
                 .email(dto.email())
-                .role(Role.ADMIN)
+                .password(dto.password())
+                .role(dto.role())
+                .description(dto.description())
                 .isEnabled(false)
                 .build();
     }

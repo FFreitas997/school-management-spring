@@ -1,8 +1,11 @@
 package org.example.schoolmanagementsystemspring.admin.service;
 
-import org.example.schoolmanagementsystemspring.admin.dto.AdminRequestRegisterDTO;
+import org.example.schoolmanagementsystemspring.admin.dto.*;
 import org.example.schoolmanagementsystemspring.authentication.exception.UserAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 /**
  * The AdminService interface provides the contract for the admin service.
@@ -15,18 +18,28 @@ import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundExcep
  */
 public interface AdminService {
 
-    /**
-     * The register method is responsible for registering a new admin user.
-     * It accepts an AdminRequestRegisterDTO object which contains the details of the new admin user.
-     * It throws a UserAlreadyExistsException if a user with the same email already exists.
-     * It throws a UserNotFoundException if the user is not found in the database.
-     *
-     * @param request a valid AdminRequestRegisterDTO object containing the details of the new admin user.
-     * @throws UserAlreadyExistsException if a user with the same email already exists.
-     * @throws UserNotFoundException if the user is not found in the database.
-     */
-    void register(AdminRequestRegisterDTO request) throws UserAlreadyExistsException, UserNotFoundException;
+    void register(RequestUser request) throws UserAlreadyExistsException, UserNotFoundException;
 
-    // TODO: associate teacher to a course or more than one course
-    // Create School and management
+    Page<ResponseTeacher> getTeachers(int page, int size);
+
+    Page<ResponseStudent> getStudents(int page, int size);
+
+    Page<ResponseParent> getParents(int page, int size);
+
+    Page<ResponseCourse> getCourses(int page, int size);
+
+    void createSchool(RequestSchool request);
+
+    // Anyone
+    List<SchoolResponse> getSchools();
+
+    // ADMIN
+    void createEvent(RequestEvent request);
+
+    // ADMIN
+    Page<EventResponse> getEvents(Integer schoolId, Integer page, Integer size);
+
+    void createCourse(RequestCourse request);
+
+    void associateTeacherToCourse(String courseCode, String teacherEmail);
 }

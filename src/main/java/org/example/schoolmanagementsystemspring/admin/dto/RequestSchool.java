@@ -1,4 +1,4 @@
-package org.example.schoolmanagementsystemspring.school.dto;
+package org.example.schoolmanagementsystemspring.admin.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -6,11 +6,6 @@ import jakarta.validation.constraints.Size;
 import org.example.schoolmanagementsystemspring.school.entity.SchoolType;
 import org.hibernate.validator.constraints.URL;
 
-/**
- * @author FFreitas
- * <a href="https://www.linkedin.com/in/francisco-freitas-a289b91b3/">LinkedIn</a>
- * <a href="https://github.com/FFreitas997/">Github</a>
- */
 public record RequestSchool(
 
         @NotBlank(message = "School name shouldn't be null or empty")

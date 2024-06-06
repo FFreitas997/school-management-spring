@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableAsync
 public class SchoolManagementSystemSpringApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(SchoolManagementSystemSpringApplication.class, args);
     }

@@ -21,4 +21,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
             select t from Teacher t inner join t.studentResponsibleFor studentResponsibleFor
             where studentResponsibleFor.email = ?1""")
     Optional<Teacher> findByStudentResponsibleFor_Email(@NonNull String email);
+
+    @Query("select t from Teacher t where t.email = ?1")
+    Optional<Teacher> findByEmail(@NonNull String email);
 }

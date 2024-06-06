@@ -1,16 +1,13 @@
-package org.example.schoolmanagementsystemspring.school.dto;
+package org.example.schoolmanagementsystemspring.admin.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.example.schoolmanagementsystemspring.event.EventType;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * DTO for {@link org.example.schoolmanagementsystemspring.event.Event}
- */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public record RequestEvent(
 
         @NotBlank(message = "Title shouldn't be null or empty")
@@ -35,5 +32,5 @@ public record RequestEvent(
         @NotNull(message = "School ID shouldn't be null")
         Integer schoolID
 
-) implements Serializable {
+) {
 }

@@ -14,13 +14,11 @@ public class SchoolResponseMapper implements Function<School, SchoolResponse> {
         return SchoolResponse.builder()
                 .id(school.getId())
                 .name(school.getName())
-                .type(school.getSchoolType())
+                .schoolType(school.getSchoolType())
                 .email(school.getEmail())
-                .phoneNumber(school.getPhoneNumber())
                 .facebookURL(school.getFacebookURL())
                 .instagramURL(school.getInstagramURL())
                 .address(school.getAddress())
-                .city(school.getCity())
                 .zipCode(school.getZipCode())
                 .build();
     }

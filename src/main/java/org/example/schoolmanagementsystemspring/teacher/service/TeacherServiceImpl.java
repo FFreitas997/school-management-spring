@@ -32,6 +32,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,6 +62,7 @@ import java.util.function.Predicate;
 public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository repository;
+    private final PasswordEncoder encoder;
     private final SchoolRepository schoolRepository;
     private final AuthenticationService authenticationService;
     private final StudentRepository studentRepository;
@@ -103,6 +105,8 @@ public class TeacherServiceImpl implements TeacherService {
         Teacher newTeacher = mapper.apply(request);
 
         newTeacher.setSchool(school);
+
+        newTeacher.setPassword(encoder.encode(request.password()));
 
         repository.save(newTeacher);
 

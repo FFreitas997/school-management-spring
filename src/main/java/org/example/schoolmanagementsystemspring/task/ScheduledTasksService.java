@@ -23,7 +23,7 @@ public class ScheduledTasksService {
     private final TokenRepository tokenRepository;
 
     /**
-     * The deleteExpiredTokens method deletes expired tokens.
+     * The deleteExpiredTokens method deleted expired tokens.
      * It is scheduled to run at the end of every month.
      * It logs the start of the operation and then calls the deleteByExpiredTrue method of the TokenRepository
      * to delete the expired tokens.

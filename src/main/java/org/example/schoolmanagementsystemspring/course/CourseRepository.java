@@ -16,4 +16,10 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     @Query("select c from Course c inner join c.students students where students.email = ?1")
     Page<Course> findByStudents_Email(@NonNull String email, Pageable pageable);
+
+    @Query("select (count(c) > 0) from Course c where upper(c.courseCode) = upper(?1)")
+    boolean existsByCourseCodeIgnoreCase(@NonNull String courseCode);
+
+    @Query("select (count(c) > 0) from Course c where c.courseCode = ?1")
+    boolean existsByCourseCode(@NonNull String courseCode);
 }

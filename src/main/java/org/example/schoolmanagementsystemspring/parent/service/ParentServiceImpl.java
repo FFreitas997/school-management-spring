@@ -17,6 +17,7 @@ import org.example.schoolmanagementsystemspring.teacher.entity.Teacher;
 import org.example.schoolmanagementsystemspring.user.entity.Role;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ParentServiceImpl implements ParentService {
 
     private final ParentRepository repository;
+    private final PasswordEncoder encoder;
     private final StudentRepository studentRepository;
     private final AuthenticationService authenticationService;
 
@@ -50,7 +52,10 @@ public class ParentServiceImpl implements ParentService {
                 .phoneNumber(request.phoneNumber())
                 .type(request.type())
                 .occupation(request.occupation())
+                .isEnabled(false)
                 .build();
+
+        parent.setPassword(encoder.encode(parent.getPassword()));
 
         repository.save(parent);
 
