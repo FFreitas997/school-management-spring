@@ -39,7 +39,6 @@ spring:
         refresh-token-expiration: 3600000 # 1 hour
   servlet:
     multipart:
-
       enabled: true
       max-file-size: 50MB
       max-request-size: 50MB
@@ -88,3 +87,6 @@ email:
 storage:
   profile-directory: "/application/storage/profiles"
   book-covers-directory: "/application/storage/book-covers"
+
+cors:
+  origins: http://localhost:4200,http://localhost:8080

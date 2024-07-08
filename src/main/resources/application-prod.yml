@@ -2,18 +2,18 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${SMTP_USERNAME}
-    password: ${SMTP_PASSWORD}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
-          trust: "*"
-        auth: true
+          auth: true
+          ssl:
+            enable: false
+            trust: "*"
         starttls:
           enable: true
-        connectiontimeout: 5000
-        timeout: 3000
-        writetimeout: 5000
+    protocol: smtp
 
   servlet:
     multipart:
@@ -23,7 +23,7 @@ spring:
   banner:
     location: banner
   datasource:
-    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}?useSSL=false&serverTimezone=Europe/Lisbon
+    url: ${POSTGRES_URL}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -66,8 +66,8 @@ management:
 
 app:
   user:
-    email: ${ADMIN_ACCOUNT_EMAIL} # admin account
-    password: ${ADMIN_ACCOUNT_PASSWORD}
+    email: ${ADMIN_EMAIL} # admin account
+    password: ${ADMIN_PASSWORD}
     firstName: Francisco
     lastName: Freitas
 
@@ -79,7 +79,7 @@ logging:
     dateformat: dd-MM-yyyy HH:mm:ss
 
 email:
-  from: francisco.freitas.ff@gmail.com
+  from: ${MAIL_USERNAME}
   subject: Account Confirmation
   confirmation:
     frontend-url: http://localhost:4200/confirm-account

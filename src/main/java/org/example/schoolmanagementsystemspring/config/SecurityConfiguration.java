@@ -2,6 +2,7 @@ package org.example.schoolmanagementsystemspring.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.schoolmanagementsystemspring.authentication.service.AuthenticationFilterService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,6 +37,9 @@ import static org.springframework.http.HttpMethod.*;
 @RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
+
+    @Value("${cors.origins}")
+    private List<String> allowedOrigins;
 
     private static final String[] PERMIT_ALL_URLS = {
             "/resources/**",
@@ -94,9 +98,9 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedOrigins(List.of("http://localhost:4200"));
+        config.setAllowedHeaders(List.of("*")); // Not Recommended
+        config.setAllowedMethods(List.of("*")); // Not Recommended
+        config.setAllowedOrigins(allowedOrigins);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
