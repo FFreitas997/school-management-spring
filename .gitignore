@@ -40,3 +40,4 @@ docker-compose.yml
 !/src/main/resources/application-dev.yml
 !/src/main/resources/application-prod.yml
 ./docker-compose.yml
+docker-compose.yml
