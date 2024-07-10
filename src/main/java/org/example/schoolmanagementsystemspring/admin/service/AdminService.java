@@ -4,6 +4,7 @@ import org.example.schoolmanagementsystemspring.admin.dto.*;
 import org.example.schoolmanagementsystemspring.authentication.exception.UserAlreadyExistsException;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -42,4 +43,6 @@ public interface AdminService {
     void createCourse(RequestCourse request);
 
     void associateTeacherToCourse(String courseCode, String teacherEmail);
+
+    AdminResponse getAdminInformation(Authentication authentication) throws UserNotFoundException;
 }

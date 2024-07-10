@@ -6,6 +6,7 @@ import org.example.schoolmanagementsystemspring.storage.StorageDirectory;
 import org.example.schoolmanagementsystemspring.storage.StorageService;
 import org.example.schoolmanagementsystemspring.user.dto.UserRequestDto;
 import org.example.schoolmanagementsystemspring.user.dto.UserDto;
+import org.example.schoolmanagementsystemspring.user.entity.Role;
 import org.example.schoolmanagementsystemspring.user.entity.User;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.example.schoolmanagementsystemspring.user.mapper.UserDTOMapper;
@@ -212,6 +213,13 @@ public class UserServiceImpl implements UserService {
         }
 
         return resource;
+    }
+
+    @Override
+    public Role getUserRole(Authentication auth) throws UserNotFoundException {
+        User user = repository.findByEmailValid(auth.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + auth.getName()));
+        return user.getRole();
     }
 
     private String getFileExtension(@NonNull String fileName) {

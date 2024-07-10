@@ -79,7 +79,7 @@ email:
   from: francisco.freitas.ff@gmail.com
   subject: Account Confirmation
   confirmation:
-    frontend-url: http://localhost:4200/confirm-account
+    frontend-url: http://localhost:4200/confirmation
   code:
     length: 6
     expiration: 10 # 10 minutes

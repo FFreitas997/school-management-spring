@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.schoolmanagementsystemspring.user.dto.UserDto;
 import org.example.schoolmanagementsystemspring.user.dto.UserRequestDto;
+import org.example.schoolmanagementsystemspring.user.entity.Role;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.example.schoolmanagementsystemspring.user.service.UserService;
 import org.springframework.core.io.Resource;
@@ -185,5 +186,15 @@ public class UserController {
                 .header("Content-Disposition", "attachment; filename=\"" + result.getFilename() + "\"")
                 .contentType(MediaType.parseMediaType("image/png"))
                 .body(result);
+    }
+
+    @Operation(summary = "Get User Role", description = "Get user role in the system.")
+    @GetMapping("/role")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT', 'PARENT')")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> getUserRole(Authentication auth) throws UserNotFoundException {
+        log.info("Getting user {} role", auth.getName());
+        Role role = service.getUserRole(auth);
+        return ResponseEntity.ok(role.toString());
     }
 }

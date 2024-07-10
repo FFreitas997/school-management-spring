@@ -12,6 +12,7 @@ import org.example.schoolmanagementsystemspring.authentication.exception.UserAlr
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,6 +61,14 @@ public class AdminController {
     public void register(@Valid @RequestBody RequestUser request) throws UserAlreadyExistsException, UserNotFoundException {
         log.info("Registering user: {}", request.email());
         service.register(request);
+    }
+
+    @Operation(summary = "Administrator Information", description = "Get information about the administrator.")
+    @PreAuthorize("hasAuthority('admin:read')")
+    @GetMapping
+    public AdminResponse getAdminInformation(Authentication authentication) throws UserNotFoundException {
+        log.info("Getting admin: {}", authentication.getName());
+        return service.getAdminInformation(authentication);
     }
 
     @Operation(summary = "Get Teachers", description = "Get a list of teachers.")

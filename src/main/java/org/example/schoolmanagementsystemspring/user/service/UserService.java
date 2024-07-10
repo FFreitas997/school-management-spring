@@ -2,6 +2,7 @@ package org.example.schoolmanagementsystemspring.user.service;
 
 import org.example.schoolmanagementsystemspring.user.dto.UserRequestDto;
 import org.example.schoolmanagementsystemspring.user.dto.UserDto;
+import org.example.schoolmanagementsystemspring.user.entity.Role;
 import org.example.schoolmanagementsystemspring.user.exception.UserNotFoundException;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -105,4 +106,6 @@ public interface UserService {
      * @throws UserNotFoundException if the user is not found.
      */
     Resource downloadUserImage(Authentication auth) throws UserNotFoundException;
+
+    Role getUserRole(Authentication auth) throws UserNotFoundException;
 }
